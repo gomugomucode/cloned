@@ -13,10 +13,6 @@ import {
   ChevronUp,
   Search,
   BookOpen,
-  HelpCircle,
-  Terminal,
-  Layers,
-  ExternalLink,
   ChevronRight,
   Sparkles
 } from 'lucide-react'

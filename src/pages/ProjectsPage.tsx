@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Terminal, Award, BookOpen, Layers } from 'lucide-react'
 import { SEOHead } from '../components/ui/SEOHead'
 import { SectionHeader, Card } from '../components/ui/SectionHeader'
 import { getTechData, getAllTechnologies } from '../data/db'

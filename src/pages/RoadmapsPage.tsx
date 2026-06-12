@@ -3,16 +3,6 @@ import { Layers, ArrowRight, Star } from 'lucide-react'
 import { SEOHead } from '../components/ui/SEOHead'
 import { SectionHeader } from '../components/ui/SectionHeader'
 
-interface RoadmapCard {
-  slug: string
-  title: string
-  description: string
-  level: string
-  duration: string
-  steps: number
-  color: string
-}
-
 const categories = [
   {
     name: 'Frontend',

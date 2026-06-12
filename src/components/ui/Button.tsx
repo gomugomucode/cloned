@@ -15,16 +15,17 @@ interface ButtonProps {
   onClick?: () => void
   type?: 'button' | 'submit'
   ariaLabel?: string
+  disabled?: boolean
 }
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    'bg-gradient-to-r from-accent-purple to-accent-violet text-white shadow-lg shadow-accent-purple/25 hover:shadow-accent-purple/40',
+    'bg-gradient-to-r from-accent-purple to-accent-violet text-white shadow-lg shadow-accent-purple/25 hover:shadow-accent-purple/40 disabled:opacity-50 disabled:pointer-events-none',
   secondary:
-    'glass text-text-primary hover:border-black/10 dark:hover:border-white/12 hover:bg-black/[0.03] dark:hover:bg-white/[0.05]',
-  ghost: 'text-text-secondary hover:text-text-primary hover:bg-black/[0.03] dark:hover:bg-white/[0.04]',
+    'glass text-text-primary hover:border-black/10 dark:hover:border-white/12 hover:bg-black/[0.03] dark:hover:bg-white/[0.05] disabled:opacity-50 disabled:pointer-events-none',
+  ghost: 'text-text-secondary hover:text-text-primary hover:bg-black/[0.03] dark:hover:bg-white/[0.04] disabled:opacity-50 disabled:pointer-events-none',
   outline:
-    'border border-accent-purple/40 text-accent-purple hover:bg-accent-purple/10 hover:border-accent-purple/60',
+    'border border-accent-purple/40 text-accent-purple hover:bg-accent-purple/10 hover:border-accent-purple/60 disabled:opacity-50 disabled:pointer-events-none',
 }
 
 const sizes: Record<ButtonSize, string> = {
@@ -49,6 +50,7 @@ export function Button({
   onClick,
   type = 'button',
   ariaLabel,
+  disabled,
 }: ButtonProps) {
   const classes = `inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-purple focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900 ${variants[variant]} ${sizes[size]} ${className}`
 
@@ -76,6 +78,7 @@ export function Button({
       className={classes}
       onClick={onClick}
       aria-label={ariaLabel}
+      disabled={disabled}
       {...motionProps}
     >
       {children}
