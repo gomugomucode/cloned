@@ -244,4 +244,29 @@
   .dark .section-alt {
     @apply bg-[#0c0c14]/30;
   }
+
+  /* ── Mobile Layout & UX ── */
+  .mobile-tab-bar {
+    @apply fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center h-16 border-t bg-white/80 backdrop-blur-xl border-black/[0.06] shadow-2xl;
+    padding-bottom: env(safe-area-inset-bottom);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .dark .mobile-tab-bar {
+    @apply bg-[#07070d]/90 border-white/[0.08] shadow-black/40;
+  }
+
+  .reading-progress-bar {
+    @apply fixed top-0 left-0 h-1 bg-gradient-to-r from-accent-purple to-accent-cyan z-[70] transition-all duration-300;
+  }
+
+  .code-overlay {
+    @apply fixed inset-0 z-50 bg-[#07070d]/95 flex flex-col p-4 md:p-8 overflow-auto;
+  }
+
+  /* Touch accordions */
+  .touch-accordion {
+    @apply min-h-[48px] py-3 px-4;
+  }
 }
+

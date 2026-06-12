@@ -7,7 +7,7 @@ import {
   BookOpen, 
   ChevronRight
 } from 'lucide-react'
-import { getAllTechnologies, getTechData } from '../data/db'
+import { getAllTechnologies, getTechMetadata } from '../data/db'
 import { getCompletedTopics, getWeeksCompleted } from '../hooks/useProgress'
 import { SEOHead } from '../components/ui/SEOHead'
 
@@ -17,68 +17,67 @@ export function ComparePage() {
   const [tech1, setTech1] = useState(allTechs[0] || 'javascript')
   const [tech2, setTech2] = useState(allTechs[1] || 'python')
 
-  const data1 = useMemo(() => getTechData(tech1), [tech1])
-  const data2 = useMemo(() => getTechData(tech2), [tech2])
+  const meta1 = useMemo(() => getTechMetadata(tech1), [tech1])
+  const meta2 = useMemo(() => getTechMetadata(tech2), [tech2])
 
   // Get statistics for Tech 1
   const stats1 = useMemo(() => {
-    if (!data1) return null
-    const roadmap = data1.roadmap
-    const totalTopics = roadmap.phases.reduce((acc, p) => acc + p.topics.length, 0)
+    if (!meta1) return null
+    const totalTopics = meta1.totalTopics
     const completed = getCompletedTopics(tech1)
     const completedCount = Object.keys(completed).filter(
-      (key) => completed[key] && roadmap.phases.some(p => p.topics.some(t => t.name === key))
+      (key) => completed[key] && meta1.topicNames.includes(key)
     ).length
     const progressPercent = totalTopics > 0 ? Math.round((completedCount / totalTopics) * 100) : 0
     const weeksDone = getWeeksCompleted(tech1).length
     const isCertified = progressPercent === 100
 
     return {
-      title: roadmap.overview.title,
-      description: roadmap.overview.description,
+      title: meta1.title,
+      description: meta1.description,
       totalTopics,
       completedCount,
       progressPercent,
       weeksDone,
-      totalWeeks: data1.resources.learningPath.totalWeeks,
-      totalHours: data1.resources.learningPath.totalHours,
-      difficulty: data1.resources.learningPath.level,
-      skillCategories: data1.resources.skillTree.length,
+      totalWeeks: meta1.totalWeeks,
+      totalHours: meta1.totalHours,
+      difficulty: meta1.difficulty,
+      skillCategories: meta1.skillCategories,
       isCertified,
-      projectsCount: data1.projects.length,
-      questionsCount: data1.interviews.length
+      projectsCount: meta1.projectsCount,
+      questionsCount: meta1.questionsCount
     }
-  }, [data1, tech1])
+  }, [meta1, tech1])
 
   // Get statistics for Tech 2
   const stats2 = useMemo(() => {
-    if (!data2) return null
-    const roadmap = data2.roadmap
-    const totalTopics = roadmap.phases.reduce((acc, p) => acc + p.topics.length, 0)
+    if (!meta2) return null
+    const totalTopics = meta2.totalTopics
     const completed = getCompletedTopics(tech2)
     const completedCount = Object.keys(completed).filter(
-      (key) => completed[key] && roadmap.phases.some(p => p.topics.some(t => t.name === key))
+      (key) => completed[key] && meta2.topicNames.includes(key)
     ).length
     const progressPercent = totalTopics > 0 ? Math.round((completedCount / totalTopics) * 100) : 0
     const weeksDone = getWeeksCompleted(tech2).length
     const isCertified = progressPercent === 100
 
     return {
-      title: roadmap.overview.title,
-      description: roadmap.overview.description,
+      title: meta2.title,
+      description: meta2.description,
       totalTopics,
       completedCount,
       progressPercent,
       weeksDone,
-      totalWeeks: data2.resources.learningPath.totalWeeks,
-      totalHours: data2.resources.learningPath.totalHours,
-      difficulty: data2.resources.learningPath.level,
-      skillCategories: data2.resources.skillTree.length,
+      totalWeeks: meta2.totalWeeks,
+      totalHours: meta2.totalHours,
+      difficulty: meta2.difficulty,
+      skillCategories: meta2.skillCategories,
       isCertified,
-      projectsCount: data2.projects.length,
-      questionsCount: data2.interviews.length
+      projectsCount: meta2.projectsCount,
+      questionsCount: meta2.questionsCount
     }
-  }, [data2, tech2])
+  }, [meta2, tech2])
+
 
   return (
     <div className="space-y-6 py-6 select-text">

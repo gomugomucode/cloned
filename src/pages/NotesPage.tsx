@@ -18,8 +18,8 @@ const notesList = [
 ]
 
 export function NotesPage() {
-  const handlePdfDownload = (slug: string) => {
-    const data = getTechData(slug)
+  const handlePdfDownload = async (slug: string) => {
+    const data = await getTechData(slug)
     if (data) {
       printTechRoadmapPdf(slug, data)
     }

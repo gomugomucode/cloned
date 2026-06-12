@@ -13,7 +13,7 @@ import {
   Compass,
   ArrowRight
 } from 'lucide-react'
-import { getAllTechnologies, getTechData } from '../data/db'
+import { getAllTechnologies, getTechMetadata } from '../data/db'
 import { 
   getStreak, 
   getThisWeekMinutes, 
@@ -44,13 +44,14 @@ export function DashboardPage() {
   const techMap = useMemo(() => {
     const map: Record<string, string[]> = {}
     getAllTechnologies().forEach(id => {
-      const data = getTechData(id)
-      if (data) {
-        map[id] = data.roadmap.phases.flatMap(p => p.topics.map(t => t.name))
+      const meta = getTechMetadata(id)
+      if (meta) {
+        map[id] = meta.topicNames
       }
     })
     return map
   }, [])
+
 
   const progressSummary = useMemo(() => {
     return getAllTechProgress(techMap)
@@ -294,10 +295,10 @@ export function DashboardPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {progressSummary.map(tech => {
-              const techData = getTechData(tech.techId)
-              if (!techData) return null
+              const techMeta = getTechMetadata(tech.techId)
+              if (!techMeta) return null
 
-              const title = techData.roadmap.overview.title
+              const title = techMeta.title
               const isCertified = tech.percent === 100
 
               return (
@@ -312,7 +313,7 @@ export function DashboardPage() {
                           {title}
                         </h3>
                         <span className="text-[10px] text-text-secondary">
-                          {techData.roadmap.overview.description.slice(0, 50)}...
+                          {techMeta.description.slice(0, 50)}...
                         </span>
                       </div>
                       

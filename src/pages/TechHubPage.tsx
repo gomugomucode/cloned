@@ -19,10 +19,12 @@ import {
   Award
 } from 'lucide-react'
 import { getTechData } from '../data/db'
+import type { FullTechData } from '../data/db'
 import { printTechRoadmapPdf } from '../utils/printPdf'
 import { SEOHead } from '../components/ui/SEOHead'
 import { Card } from '../components/ui/SectionHeader'
 import { Button } from '../components/ui/Button'
+import { PageLoadingSpinner } from '../components/ui/PageLoadingSpinner'
 
 // New V2 Sub-Components
 import { ResourcesTab } from '../components/tech/ResourcesTab'
@@ -42,7 +44,9 @@ export function TechHubPage() {
   const { technology } = useParams<{ technology: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
   const techKey = technology?.toLowerCase() || ''
-  const data = getTechData(techKey)
+  
+  const [data, setData] = useState<FullTechData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   // URL Tab handling
   const activeTab = searchParams.get('tab') || 'overview'
@@ -60,6 +64,17 @@ export function TechHubPage() {
   // Copy feedback state
   const [copiedText, setCopiedText] = useState<string | null>(null)
 
+  // Load technology data asynchronously on mount/change
+  useEffect(() => {
+    setIsLoading(true)
+    getTechData(techKey).then((res) => {
+      setData(res || null)
+      setIsLoading(false)
+    }).catch(() => {
+      setData(null)
+      setIsLoading(false)
+    })
+  }, [techKey])
 
   // Record visit
   useEffect(() => {
@@ -89,6 +104,10 @@ export function TechHubPage() {
   useEffect(() => {
     localStorage.setItem(`stackforge-completed-${techKey}`, JSON.stringify(completedTopics))
   }, [completedTopics, techKey])
+
+  if (isLoading) {
+    return <PageLoadingSpinner />
+  }
 
   if (!data) {
     return (

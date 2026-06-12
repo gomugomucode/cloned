@@ -2,18 +2,34 @@ import { useState, useEffect, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Lock, ArrowLeft, Printer, Check, User } from 'lucide-react'
 import { getTechData } from '../data/db'
+import type { FullTechData } from '../data/db'
 import { getCompletedTopics, getUserName, setUserName } from '../hooks/useProgress'
 import { printStudyCertificate } from '../utils/printCertificate'
 import { SEOHead } from '../components/ui/SEOHead'
+import { PageLoadingSpinner } from '../components/ui/PageLoadingSpinner'
 
 export function CertificatePage() {
   const { technology } = useParams<{ technology: string }>()
   const techId = technology?.toLowerCase() || ''
-  const data = getTechData(techId)
+  
+  const [data, setData] = useState<FullTechData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [userName, setLocalUserName] = useState(getUserName())
   const [isEditingName, setIsEditingName] = useState(false)
   const [nameInput, setNameInput] = useState(userName)
+
+  // Load technology data asynchronously on mount/change
+  useEffect(() => {
+    setIsLoading(true)
+    getTechData(techId).then((res) => {
+      setData(res || null)
+      setIsLoading(false)
+    }).catch(() => {
+      setData(null)
+      setIsLoading(false)
+    })
+  }, [techId])
 
   // Reload user name on mount
   useEffect(() => {
@@ -52,6 +68,10 @@ export function CertificatePage() {
       setLocalUserName(nameInput.trim())
       setIsEditingName(false)
     }
+  }
+
+  if (isLoading) {
+    return <PageLoadingSpinner />
   }
 
   if (!data) {

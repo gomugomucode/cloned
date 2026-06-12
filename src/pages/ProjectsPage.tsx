@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { SEOHead } from '../components/ui/SEOHead'
 import { SectionHeader, Card } from '../components/ui/SectionHeader'
-import { getTechData, getAllTechnologies } from '../data/db'
 import type { ProjectDetails } from '../data/types'
+import { PageLoadingSpinner } from '../components/ui/PageLoadingSpinner'
 
 interface AggregatedProject extends ProjectDetails {
   techKey: string
@@ -12,24 +12,45 @@ interface AggregatedProject extends ProjectDetails {
 
 export function ProjectsPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<'All' | 'Beginner' | 'Intermediate' | 'Advanced'>('All')
+  const [allProjects, setAllProjects] = useState<AggregatedProject[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Aggregate all projects dynamically
-  const allProjects = useMemo(() => {
-    const list: AggregatedProject[] = []
-    const slugs = getAllTechnologies()
-    slugs.forEach((slug) => {
-      const data = getTechData(slug)
-      if (data) {
-        data.projects.forEach((proj) => {
-          list.push({
-            ...proj,
-            techKey: slug,
-            techName: data.roadmap.overview.title
+  // Aggregate all projects dynamically on mount
+  useEffect(() => {
+    setIsLoading(true)
+    const loadProjects = async () => {
+      try {
+        const { getTechData, getAllTechnologies } = await import('../data/db')
+        const slugs = getAllTechnologies()
+        const list: AggregatedProject[] = []
+        
+        const loaded = await Promise.all(
+          slugs.map(async (slug) => {
+            const res = await getTechData(slug)
+            return { slug, data: res }
           })
+        )
+
+        loaded.forEach(({ slug, data }) => {
+          if (data) {
+            data.projects.forEach((proj) => {
+              list.push({
+                ...proj,
+                techKey: slug,
+                techName: data.roadmap.overview.title
+              })
+            })
+          }
         })
+        setAllProjects(list)
+      } catch (err) {
+        console.error('Failed to load projects:', err)
+      } finally {
+        setIsLoading(false)
       }
-    })
-    return list
+    }
+
+    loadProjects()
   }, [])
 
   // Filter projects
@@ -38,6 +59,7 @@ export function ProjectsPage() {
       return selectedDifficulty === 'All' || proj.difficulty === selectedDifficulty
     })
   }, [allProjects, selectedDifficulty])
+
 
   return (
     <>
@@ -73,8 +95,11 @@ export function ProjectsPage() {
           </div>
 
           {/* Projects Display Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {filteredProjects.map((proj, idx) => {
+          {isLoading ? (
+            <PageLoadingSpinner />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {filteredProjects.map((proj, idx) => {
               const diffColors =
                 proj.difficulty === 'Beginner'
                   ? 'text-accent-emerald bg-accent-emerald/10 border-accent-emerald/20'
@@ -145,6 +170,7 @@ export function ProjectsPage() {
               )
             })}
           </div>
+          )}
 
           {filteredProjects.length === 0 && (
             <div className="text-center py-12 text-text-secondary">
