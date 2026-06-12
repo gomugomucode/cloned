@@ -255,7 +255,7 @@ export function printTechRoadmapPdf(tech: string, data: FullTechData) {
         </div>
 
         <div class="section-title">Learning Roadmap</div>
-        ${phases.map((phase, idx) => `
+        ${phases.map((phase) => `
           <div class="phase-card">
             <div class="phase-header">
               <h3 class="phase-title">${phase.title}</h3>
