@@ -9,7 +9,7 @@ export function ScrollToTop() {
       const element = document.querySelector(hash)
       element?.scrollIntoView({ behavior: 'smooth' })
     } else {
-      window.scrollTo({ top: 0, behavior: 'instant' })
+      window.scrollTo({ top: 0, behavior: 'auto' })
     }
   }, [pathname, hash])
 
