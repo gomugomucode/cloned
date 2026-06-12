@@ -14,13 +14,29 @@ import {
   Search,
   BookOpen,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Bookmark,
+  Award
 } from 'lucide-react'
 import { getTechData } from '../data/db'
 import { printTechRoadmapPdf } from '../utils/printPdf'
 import { SEOHead } from '../components/ui/SEOHead'
 import { Card } from '../components/ui/SectionHeader'
 import { Button } from '../components/ui/Button'
+
+// New V2 Sub-Components
+import { ResourcesTab } from '../components/tech/ResourcesTab'
+import { LearningPathTab } from '../components/tech/LearningPathTab'
+import { SkillTreeTab } from '../components/tech/SkillTreeTab'
+import { AIAssistant } from '../components/tech/AIAssistant'
+
+// V2 Progress Hooks
+import { 
+  recordVisit, 
+  isBookmarked, 
+  toggleBookmark, 
+  recordPdfDownload 
+} from '../hooks/useProgress'
 
 export function TechHubPage() {
   const { technology } = useParams<{ technology: string }>()
@@ -43,6 +59,16 @@ export function TechHubPage() {
 
   // Copy feedback state
   const [copiedText, setCopiedText] = useState<string | null>(null)
+
+  // Local state to force re-render when bookmarks change
+  const [bookmarkUpdate, setBookmarkUpdate] = useState(0)
+
+  // Record visit
+  useEffect(() => {
+    if (data) {
+      recordVisit(techKey, data.roadmap.overview.title, activeTab)
+    }
+  }, [techKey, data, activeTab])
 
   // Roadmap Checklists state from LocalStorage
   const [completedTopics, setCompletedTopics] = useState<Record<string, boolean>>(() => {
@@ -190,6 +216,9 @@ export function TechHubPage() {
               { id: 'overview', label: 'Overview' },
               { id: 'roadmap', label: 'Roadmap Timeline' },
               { id: 'notes', label: 'Study Notes' },
+              { id: 'resources', label: 'Resources' },
+              { id: 'learning-path', label: 'Learning Path' },
+              { id: 'skill-tree', label: 'Skill Tree' },
               { id: 'cheatsheets', label: 'Cheat Sheet' },
               { id: 'projects', label: 'Hands-on Projects' },
               { id: 'interviews', label: 'Interview Prep' }
@@ -213,6 +242,29 @@ export function TechHubPage() {
       {/* Tab Contents */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         
+        {/* Certificate Banner */}
+        {progressPercent === 100 && (
+          <div className="mb-6 max-w-4xl mx-auto">
+            <div className="glass p-5 rounded-2xl border border-accent-emerald/30 bg-accent-emerald/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-accent-emerald/10 flex items-center justify-center text-accent-emerald shrink-0">
+                  <Award className="w-6 h-6 animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-text-primary">Roadmap Fully Completed!</h4>
+                  <p className="text-xs text-text-secondary">Congratulations! You have completed 100% of the syllabus. Claim your study certificate of completion now.</p>
+                </div>
+              </div>
+              <Link
+                to={`/certificate/${techKey}`}
+                className="px-5 py-2.5 bg-accent-emerald hover:bg-accent-emerald/90 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-accent-emerald/15 shrink-0"
+              >
+                Claim Study Certificate
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* OVERVIEW TAB */}
         {activeTab === 'overview' && (
           <div className="max-w-4xl mx-auto space-y-8">
@@ -265,7 +317,7 @@ export function TechHubPage() {
               <p className="text-text-secondary text-sm mb-6 max-w-md mx-auto">
                 Get a beautifully formatted PDF containing the roadmap timeline, interview questions, projects, and tips.
               </p>
-              <Button onClick={() => printTechRoadmapPdf(techKey, data)} variant="primary" size="md" className="gap-2">
+              <Button onClick={() => { printTechRoadmapPdf(techKey, data); recordPdfDownload(techKey, data.roadmap.overview.title); }} variant="primary" size="md" className="gap-2">
                 <Download className="w-4 h-4" /> Download {techTitle} Roadmap PDF
               </Button>
             </Card>
@@ -280,7 +332,7 @@ export function TechHubPage() {
                 <h2 className="text-2xl font-bold text-text-primary">Syllabus Path</h2>
                 <p className="text-text-secondary text-sm">Check off topics as you learn to track your progress.</p>
               </div>
-              <Button onClick={() => printTechRoadmapPdf(techKey, data)} variant="outline" size="sm" className="gap-2 shrink-0">
+              <Button onClick={() => { printTechRoadmapPdf(techKey, data); recordPdfDownload(techKey, data.roadmap.overview.title); }} variant="outline" size="sm" className="gap-2 shrink-0">
                 <Download className="w-4 h-4" /> Print PDF
               </Button>
             </div>
@@ -360,7 +412,7 @@ export function TechHubPage() {
               <p className="text-text-secondary text-sm mb-6 max-w-md mx-auto">
                 Generate the dynamic syllabus to display on your workspace or share with your team.
               </p>
-              <Button onClick={() => printTechRoadmapPdf(techKey, data)} variant="primary" size="md" className="gap-2">
+              <Button onClick={() => { printTechRoadmapPdf(techKey, data); recordPdfDownload(techKey, data.roadmap.overview.title); }} variant="primary" size="md" className="gap-2">
                 <Download className="w-4 h-4" /> Download Roadmap PDF
               </Button>
             </Card>
@@ -393,9 +445,32 @@ export function TechHubPage() {
             <div className="lg:col-span-3 space-y-6">
               {activeChapter ? (
                 <Card className="space-y-6">
-                  <div>
-                    <h2 className="text-2xl font-bold text-text-primary">{activeChapter.title}</h2>
-                    <div className="h-0.5 w-12 bg-accent-purple mt-2" />
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h2 className="text-2xl font-bold text-text-primary">{activeChapter.title}</h2>
+                      <div className="h-0.5 w-12 bg-accent-purple mt-2" />
+                    </div>
+                    <button
+                      onClick={() => {
+                        toggleBookmark({
+                          id: `${techKey}-note-${activeChapter.id}`,
+                          type: 'note',
+                          techId: techKey,
+                          title: activeChapter.title,
+                          subtitle: `${techTitle} Study Notes`,
+                          savedAt: new Date().toISOString()
+                        })
+                        setBookmarkUpdate(prev => prev + 1)
+                      }}
+                      className={`p-2 rounded-xl border transition-all ${
+                        isBookmarked(`${techKey}-note-${activeChapter.id}`)
+                          ? 'bg-accent-purple/20 border-accent-purple/30 text-accent-purple'
+                          : 'bg-transparent border-border/30 text-text-secondary hover:text-text-primary'
+                      }`}
+                      title="Bookmark Notes"
+                    >
+                      <Bookmark className="w-4 h-4" fill={isBookmarked(`${techKey}-note-${activeChapter.id}`) ? "currentColor" : "none"} />
+                    </button>
                   </div>
 
                   <p className="text-text-secondary leading-relaxed text-base">
@@ -442,7 +517,22 @@ export function TechHubPage() {
                 <div className="text-center py-12 text-text-secondary">Select a chapter on the sidebar to begin studying.</div>
               )}
             </div>
-          </div>
+            </div>
+          )}
+
+        {/* RESOURCES TAB */}
+        {activeTab === 'resources' && (
+          <ResourcesTab techId={techKey} techTitle={techTitle} resourcesData={data.resources} />
+        )}
+
+        {/* LEARNING PATH TAB */}
+        {activeTab === 'learning-path' && (
+          <LearningPathTab techId={techKey} learningPath={data.resources.learningPath} />
+        )}
+
+        {/* SKILL TREE TAB */}
+        {activeTab === 'skill-tree' && (
+          <SkillTreeTab techId={techKey} skillTree={data.resources.skillTree} />
         )}
 
         {/* CHEATSHEETS TAB */}
@@ -487,6 +577,27 @@ export function TechHubPage() {
                       <span className="text-[10px] font-bold uppercase tracking-wider text-accent-purple bg-accent-purple/10 px-2 py-0.5 rounded">
                         {item.category}
                       </span>
+                      <button
+                        onClick={() => {
+                          toggleBookmark({
+                            id: `${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`,
+                            type: 'cheatsheet',
+                            techId: techKey,
+                            title: item.command,
+                            subtitle: item.description,
+                            savedAt: new Date().toISOString()
+                          })
+                          setBookmarkUpdate(prev => prev + 1)
+                        }}
+                        className={`p-1.5 rounded-lg border transition-all ${
+                          isBookmarked(`${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`)
+                            ? 'bg-accent-purple/20 border-accent-purple/30 text-accent-purple'
+                            : 'bg-transparent border-border/30 text-text-secondary hover:text-text-primary'
+                        }`}
+                        title="Bookmark Command"
+                      >
+                        <Bookmark className="w-3.5 h-3.5" fill={isBookmarked(`${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`) ? "currentColor" : "none"} />
+                      </button>
                     </div>
                     <h3 className="font-mono font-bold text-sm text-text-primary mb-2 bg-surface-850 p-2 rounded border border-black/[0.03] dark:border-white/[0.03]">
                       {item.command}
@@ -523,8 +634,8 @@ export function TechHubPage() {
                 </div>
               )}
             </div>
-          </div>
-        )}
+            </div>
+          )}
 
         {/* PROJECTS TAB */}
         {activeTab === 'projects' && (
@@ -654,6 +765,30 @@ export function TechHubPage() {
                         <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${levelColors}`}>
                           {item.level}
                         </span>
+                        
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            toggleBookmark({
+                              id: `${techKey}-interview-${idx}`,
+                              type: 'interview',
+                              techId: techKey,
+                              title: item.question,
+                              subtitle: item.answer,
+                              savedAt: new Date().toISOString()
+                            })
+                            setBookmarkUpdate(prev => prev + 1)
+                          }}
+                          className={`p-1 rounded bg-background border transition-all cursor-pointer ${
+                            isBookmarked(`${techKey}-interview-${idx}`)
+                              ? 'border-accent-purple text-accent-purple bg-accent-purple/10'
+                              : 'border-border/30 text-text-secondary hover:text-text-primary'
+                          }`}
+                          title="Bookmark Question"
+                        >
+                          <Bookmark className="w-3 h-3" fill={isBookmarked(`${techKey}-interview-${idx}`) ? "currentColor" : "none"} />
+                        </div>
+
                         <span className="font-bold text-text-primary text-sm md:text-base">
                           {item.question}
                         </span>
@@ -681,6 +816,9 @@ export function TechHubPage() {
         )}
 
       </div>
+
+      {/* Floating local AI Study Guide Assistant */}
+      <AIAssistant techTitle={techTitle} qaPairs={data.resources.aiQA} />
     </>
   )
 }

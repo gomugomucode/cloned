@@ -140,7 +140,7 @@ export function ComparePage() {
                 <p className="text-xs text-text-secondary leading-relaxed">{stats1.description}</p>
               </div>
               <div className="mt-4 pt-3 border-t border-border/10 flex justify-between items-center">
-                <Link to={`/roadmap/${tech1}`} className="text-xs font-bold text-accent-purple hover:underline flex items-center gap-1">
+                <Link to={`/learn/${tech1}`} className="text-xs font-bold text-accent-purple hover:underline flex items-center gap-1">
                   View full Roadmap <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -154,7 +154,7 @@ export function ComparePage() {
                 <p className="text-xs text-text-secondary leading-relaxed">{stats2.description}</p>
               </div>
               <div className="mt-4 pt-3 border-t border-border/10 flex justify-between items-center">
-                <Link to={`/roadmap/${tech2}`} className="text-xs font-bold text-accent-cyan hover:underline flex items-center gap-1">
+                <Link to={`/learn/${tech2}`} className="text-xs font-bold text-accent-cyan hover:underline flex items-center gap-1">
                   View full Roadmap <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

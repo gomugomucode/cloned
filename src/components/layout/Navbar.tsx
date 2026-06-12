@@ -108,6 +108,9 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <SearchSystem />
             <ThemeToggle />
+            <Button to="/dashboard" variant="ghost" size="sm">
+              Dashboard
+            </Button>
             <Button to="/roadmaps" variant="ghost" size="sm">
               Syllabus
             </Button>

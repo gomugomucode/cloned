@@ -12,6 +12,10 @@ import { ProjectsPage } from './pages/ProjectsPage'
 import { CertificationsPage } from './pages/CertificationsPage'
 import { ToolsPage } from './pages/ToolsPage'
 import { TechHubPage } from './pages/TechHubPage'
+import { DashboardPage } from './pages/DashboardPage'
+import { BookmarksPage } from './pages/BookmarksPage'
+import { ComparePage } from './pages/ComparePage'
+import { CertificatePage } from './pages/CertificatePage'
 
 export default function App() {
   return (
@@ -22,6 +26,12 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          
+          {/* Dashboard & Comparison & Bookmarks */}
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/bookmarks" element={<BookmarksPage />} />
+          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/certificate/:technology" element={<CertificatePage />} />
           
           {/* Separate Academy Pages */}
           <Route path="/roadmaps" element={<RoadmapsPage />} />

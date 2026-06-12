@@ -10,8 +10,13 @@ const footerLinks = [
   { label: 'Cheat Sheets', href: '/cheatsheets' },
   { label: 'Interview Prep', href: '/interview-prep' },
   { label: 'Projects', href: '/projects' },
-  { label: 'Certifications', href: '/certifications' },
-  { label: 'Tools & Utilities', href: '/tools' },
+  { label: 'Tools', href: '/tools' },
+]
+
+const platformLinks = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Bookmarks', href: '/bookmarks' },
+  { label: 'Compare paths', href: '/compare' },
 ]
 
 export function Footer() {
@@ -19,15 +24,15 @@ export function Footer() {
     <footer className="border-t border-black/[0.06] dark:border-white/[0.06] bg-surface-950/80 backdrop-blur-xl">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <FadeIn className="lg:col-span-2">
+          <FadeIn>
             <Link to="/" className="flex items-center gap-2.5 mb-5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center">
                 <Layers className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-text-primary">{brandName}</span>
             </Link>
-            <p className="text-text-secondary max-w-md mb-6 leading-relaxed text-sm">
-              {brandTagline}. Free courses, quizzes, games, roadmaps, and resources to help you become a better developer.
+            <p className="text-text-secondary max-w-sm mb-6 leading-relaxed text-sm">
+              {brandTagline}. Curated study guides, cheatsheets, and roadmaps to speed up your learning loop.
             </p>
             <div className="flex gap-3">
               {[
@@ -49,10 +54,26 @@ export function Footer() {
             </div>
           </FadeIn>
 
-          <FadeIn delay={0.1}>
-            <h3 className="text-text-primary font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
+          <FadeIn delay={0.05}>
+            <h3 className="text-text-primary font-semibold mb-4 text-sm uppercase tracking-wider">Academy</h3>
             <ul className="space-y-3">
               {footerLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.href}
+                    className="text-text-secondary hover:text-accent-purple transition-colors text-sm"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <h3 className="text-text-primary font-semibold mb-4 text-sm uppercase tracking-wider">Platform</h3>
+            <ul className="space-y-3">
+              {platformLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.href}

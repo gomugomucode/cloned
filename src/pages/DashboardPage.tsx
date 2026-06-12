@@ -235,7 +235,7 @@ export function DashboardPage() {
                 {recentVisits.map((v, i) => (
                   <Link
                     key={i}
-                    to={`/roadmap/${v.techId}?tab=${v.tab}`}
+                    to={`/learn/${v.techId}?tab=${v.tab}`}
                     className="flex justify-between items-center p-3 bg-background-card/30 hover:bg-background-card/60 border border-border/10 hover:border-accent-purple/20 rounded-xl transition-all duration-200"
                   >
                     <div>
@@ -351,7 +351,7 @@ export function DashboardPage() {
                   {/* Actions */}
                   <div className="mt-4 pt-3 border-t border-border/10 flex justify-between items-center text-xs">
                     <Link
-                      to={`/roadmap/${tech.techId}`}
+                      to={`/learn/${tech.techId}`}
                       className="text-text-secondary hover:text-text-primary font-medium flex items-center gap-0.5"
                     >
                       Study Roadmap <ChevronRight className="w-3.5 h-3.5" />

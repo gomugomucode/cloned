@@ -10,12 +10,14 @@ export const navLinks: NavLink[] = [
 ]
 
 export const academyLinks: NavLink[] = [
+  { label: 'Dashboard', href: '/dashboard' },
   { label: 'Roadmaps', href: '/roadmaps' },
   { label: 'Study Notes', href: '/notes' },
   { label: 'Cheat Sheets', href: '/cheatsheets' },
   { label: 'Interview Prep', href: '/interview-prep' },
   { label: 'Projects', href: '/projects' },
-  { label: 'Certifications', href: '/certifications' },
+  { label: 'Compare paths', href: '/compare' },
+  { label: 'Bookmarks', href: '/bookmarks' },
   { label: 'Tools', href: '/tools' },
 ]
 
