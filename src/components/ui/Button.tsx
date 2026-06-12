@@ -21,8 +21,8 @@ const variants: Record<ButtonVariant, string> = {
   primary:
     'bg-gradient-to-r from-accent-purple to-accent-violet text-white shadow-lg shadow-accent-purple/25 hover:shadow-accent-purple/40',
   secondary:
-    'glass text-text-primary hover:border-white/12 hover:bg-white/[0.05]',
-  ghost: 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04]',
+    'glass text-text-primary hover:border-black/10 dark:hover:border-white/12 hover:bg-black/[0.03] dark:hover:bg-white/[0.05]',
+  ghost: 'text-text-secondary hover:text-text-primary hover:bg-black/[0.03] dark:hover:bg-white/[0.04]',
   outline:
     'border border-accent-purple/40 text-accent-purple hover:bg-accent-purple/10 hover:border-accent-purple/60',
 }

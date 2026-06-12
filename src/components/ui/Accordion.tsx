@@ -24,7 +24,7 @@ export function Accordion({ items, className = '' }: AccordionProps) {
         return (
           <div
             key={item.id}
-            className="glass-card rounded-2xl overflow-hidden transition-colors hover:border-white/10"
+            className="glass-card rounded-2xl overflow-hidden transition-colors hover:border-black/10 dark:hover:border-white/10"
           >
             <button
               type="button"
@@ -38,7 +38,7 @@ export function Accordion({ items, className = '' }: AccordionProps) {
               <motion.span
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.25 }}
-                className="shrink-0 w-8 h-8 rounded-lg bg-surface-700/80 flex items-center justify-center"
+                className="shrink-0 w-8 h-8 rounded-lg bg-surface-800/80 flex items-center justify-center"
               >
                 <ChevronDown className="w-4 h-4 text-text-secondary" aria-hidden="true" />
               </motion.span>
@@ -56,7 +56,7 @@ export function Accordion({ items, className = '' }: AccordionProps) {
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="px-6 pb-5 text-text-secondary text-sm leading-relaxed border-t border-white/[0.04] pt-4">
+                  <p className="px-6 pb-5 text-text-secondary text-sm leading-relaxed border-t border-black/[0.04] dark:border-white/[0.04] pt-4">
                     {item.answer}
                   </p>
                 </motion.div>

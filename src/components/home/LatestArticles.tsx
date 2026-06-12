@@ -5,15 +5,39 @@ import { articles } from '../../data/articles'
 import { SectionHeader } from '../ui/SectionHeader'
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
 
+interface HighlightTextProps {
+  text: string
+  search: string
+}
+
+function HighlightText({ text, search }: HighlightTextProps) {
+  if (!search) return <>{text}</>
+  const parts = text.split(new RegExp(`(${search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'))
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.toLowerCase() === search.toLowerCase() ? (
+          <mark key={i} className="bg-accent-purple/20 text-accent-purple font-medium rounded-sm px-0.5">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </>
+  )
+}
+
 interface ArticleCardProps {
   article: Article
   featured?: boolean
+  searchQuery?: string
 }
 
-export function ArticleCard({ article, featured = false }: ArticleCardProps) {
+export function ArticleCard({ article, featured = false, searchQuery = '' }: ArticleCardProps) {
   return (
     <article
-      className={`group rounded-2xl overflow-hidden bg-surface-800/80 border border-surface-600/50 hover:border-accent-purple/40 transition-all duration-300 hover:-translate-y-1 ${
+      className={`group rounded-2xl overflow-hidden bg-surface-950/80 border border-black/[0.06] dark:border-white/[0.06] hover:border-accent-purple/40 hover:bg-surface-850 hover:shadow-xl dark:hover:shadow-accent-purple/5 transition-all duration-300 hover:-translate-y-1 ${
         featured ? 'md:col-span-2 md:grid md:grid-cols-2' : ''
       }`}
     >
@@ -30,10 +54,10 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
           {article.category}
         </span>
         <h3 className="font-bold text-text-primary mb-2 group-hover:text-accent-purple transition-colors line-clamp-2">
-          {article.title}
+          <HighlightText text={article.title} search={searchQuery} />
         </h3>
         <p className="text-text-secondary text-sm leading-relaxed mb-4 line-clamp-2 flex-1">
-          {article.excerpt}
+          <HighlightText text={article.excerpt} search={searchQuery} />
         </p>
         <div className="flex items-center justify-between text-xs text-text-muted">
           <div className="flex items-center gap-3">
@@ -62,7 +86,7 @@ export function LatestArticles() {
   const latest = articles.slice(0, 4)
 
   return (
-    <section ref={ref} className="py-20 md:py-28 bg-surface-850/30">
+    <section ref={ref} className="py-20 md:py-28 section-alt">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           badge="From the Blog"

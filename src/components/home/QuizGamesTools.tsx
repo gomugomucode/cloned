@@ -6,9 +6,9 @@ import { SectionHeader } from '../ui/SectionHeader'
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
 
 const typeColors = {
-  quiz: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-  game: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-  tool: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+  quiz: 'bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20',
+  game: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20',
+  tool: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
 }
 
 interface ActivityCardProps {
@@ -21,10 +21,10 @@ export function ActivityCard({ item }: ActivityCardProps) {
   return (
     <a
       href={item.href}
-      className="group block p-6 rounded-2xl bg-surface-800/80 border border-surface-600/50 hover:border-accent-purple/40 transition-all duration-300 hover:-translate-y-1"
+      className="group block p-6 rounded-2xl bg-surface-950/80 border border-black/[0.06] dark:border-white/[0.06] hover:border-accent-purple/40 hover:bg-surface-850 hover:shadow-xl dark:hover:shadow-accent-purple/5 transition-all duration-300 hover:-translate-y-1"
     >
       <div className="flex items-start justify-between mb-4">
-        <div className="w-11 h-11 rounded-xl bg-surface-700 flex items-center justify-center group-hover:bg-accent-purple/10 transition-colors">
+        <div className="w-11 h-11 rounded-xl bg-surface-800 flex items-center justify-center group-hover:bg-accent-purple/10 transition-colors">
           <Icon className="w-5 h-5 text-accent-purple" />
         </div>
         <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${typeColors[item.type]}`}>
@@ -52,7 +52,7 @@ export function QuizGamesTools() {
   const { ref, isVisible } = useScrollAnimation()
 
   return (
-    <section ref={ref} className="py-20 md:py-28 bg-surface-850/30">
+    <section ref={ref} className="py-20 md:py-28 section-alt">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           badge="Interactive"

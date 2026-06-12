@@ -24,11 +24,11 @@ export function RoadmapsSection() {
           {roadmaps.map((roadmap) => (
             <div
               key={roadmap.id}
-              className={`group relative overflow-hidden rounded-2xl border border-surface-600/50 bg-gradient-to-br ${roadmap.color} p-6 md:p-8 hover:border-accent-purple/40 transition-all duration-300 hover:-translate-y-1`}
+              className={`group relative overflow-hidden rounded-2xl border border-black/[0.06] dark:border-white/[0.06] bg-gradient-to-br ${roadmap.color} p-6 md:p-8 hover:border-accent-purple/40 transition-all duration-300 hover:-translate-y-1`}
             >
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-surface-800/80 text-text-secondary border border-surface-600">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-surface-850/80 text-text-secondary border border-black/[0.06] dark:border-white/[0.06]">
                     {roadmap.level}
                   </span>
                   <span className="text-xs text-text-muted">{roadmap.duration}</span>

@@ -62,7 +62,7 @@ export function Card({ children, className = '', hover = true, glow = 'none' }: 
   return (
     <div
       className={`gradient-border rounded-2xl p-6 md:p-8 glass-card ${
-        hover ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent-purple/5 hover:border-white/10' : ''
+        hover ? 'card-hover hover:border-black/10 dark:hover:border-white/10' : ''
       } ${glowClass} ${className}`}
     >
       {children}

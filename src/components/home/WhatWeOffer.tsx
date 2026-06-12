@@ -8,7 +8,7 @@ export function WhatWeOffer() {
   const { ref, isVisible } = useScrollAnimation()
 
   return (
-    <section ref={ref} className="py-20 md:py-28 bg-surface-850/30">
+    <section ref={ref} className="py-20 md:py-28 section-alt">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           badge="What We Offer"
@@ -56,7 +56,7 @@ export function WhatWeOffer() {
                     {item.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 rounded-md bg-surface-700 text-xs font-mono text-text-secondary"
+                        className="px-2.5 py-1 rounded-md bg-surface-800 text-xs font-mono text-text-secondary"
                       >
                         {tag}
                       </span>

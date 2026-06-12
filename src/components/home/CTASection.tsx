@@ -48,7 +48,7 @@ export function CTASection({ variant = 'primary' }: CTASectionProps) {
             <div className="absolute inset-0 bg-gradient-to-br from-accent-purple/20 via-surface-800 to-accent-cyan/10" />
             <div className="absolute inset-0 hero-grid opacity-30" />
             <div className="relative glass-card border-0 rounded-3xl p-10 md:p-16 text-center">
-              <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 text-accent-purple border border-white/10">
+              <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-black/5 dark:bg-white/5 text-accent-purple border border-black/10 dark:border-white/10">
                 Start Today
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 max-w-2xl mx-auto leading-tight">

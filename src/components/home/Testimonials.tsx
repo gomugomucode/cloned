@@ -22,7 +22,7 @@ export function Testimonials() {
               <article className="glass-card gradient-border rounded-2xl p-6 md:p-8 h-full flex flex-col glow-purple">
                 <Quote className="w-8 h-8 text-accent-purple/40 mb-4" aria-hidden="true" />
                 <p className="text-text-secondary leading-relaxed flex-1 mb-6">&ldquo;{item.quote}&rdquo;</p>
-                <div className="flex items-center gap-4 pt-4 border-t border-white/[0.06]">
+                <div className="flex items-center gap-4 pt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
                   <img
                     src={item.avatar}
                     alt=""
@@ -31,7 +31,9 @@ export function Testimonials() {
                   />
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-text-primary truncate">{item.name}</p>
-                    <p className="text-xs text-text-muted truncate">{item.role}</p>
+                    <p className="text-xs text-text-muted truncate">
+                      {item.role} &bull; {item.company}
+                    </p>
                   </div>
                   <div className="flex gap-0.5" aria-label={`${item.rating} out of 5 stars`}>
                     {Array.from({ length: 5 }).map((_, i) => (

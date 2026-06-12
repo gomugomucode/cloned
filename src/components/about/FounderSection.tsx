@@ -10,7 +10,7 @@ export function FounderPreview() {
   const { ref, isVisible } = useScrollAnimation()
 
   return (
-    <section ref={ref} className="py-20 md:py-28 bg-surface-850/30">
+    <section ref={ref} className="py-20 md:py-28 section-alt">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader badge="Meet the Founder" title="Built by a Developer," highlight="For Developers" />
 
@@ -27,7 +27,7 @@ export function FounderPreview() {
                   alt={founder.name}
                   className="w-full h-64 md:h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-surface-800 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-surface-950 via-transparent to-transparent" />
               </div>
               <div className="md:col-span-3 p-6 md:p-8">
                 <p className="text-sm text-accent-purple font-semibold mb-1">{founder.role}</p>
@@ -84,7 +84,7 @@ export function AboutContent() {
                   alt={founder.name}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-surface-800 via-surface-800/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-surface-950 via-surface-950/20 to-transparent" />
               </div>
               <div className="lg:col-span-3 p-8 md:p-10">
                 <p className="text-sm font-semibold text-accent-purple mb-2">{founder.role}</p>
@@ -94,7 +94,7 @@ export function AboutContent() {
 
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {founder.stats.map((stat) => (
-                    <div key={stat.label} className="text-center p-4 rounded-xl bg-surface-750 border border-surface-600/50">
+                    <div key={stat.label} className="text-center p-4 rounded-xl bg-surface-800 border border-black/[0.06] dark:border-white/[0.06]">
                       <div className="text-2xl font-bold font-mono gradient-text">{stat.value}</div>
                       <div className="text-xs text-text-muted mt-1">{stat.label}</div>
                     </div>
@@ -109,7 +109,7 @@ export function AboutContent() {
                         key={social.platform}
                         href={social.href}
                         aria-label={social.platform}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-750 border border-surface-600 text-text-secondary hover:text-accent-purple hover:border-accent-purple/40 transition-all text-sm font-medium"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-800 border border-black/[0.06] dark:border-white/[0.06] text-text-secondary hover:text-accent-purple hover:border-accent-purple/40 transition-all text-sm font-medium"
                       >
                         <Icon className="w-4 h-4" />
                         {social.platform}

@@ -34,7 +34,7 @@ export function WeeklyChallenge() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div
-          className={`gradient-border rounded-3xl p-8 md:p-12 lg:p-16 glow-purple transition-all duration-700 ${
+          className={`gradient-border rounded-3xl p-8 md:p-12 lg:p-16 glass-card glow-purple transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -55,7 +55,7 @@ export function WeeklyChallenge() {
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {challengeStats.map((stat) => (
-                  <div key={stat.label} className="p-4 rounded-xl bg-surface-750/80 border border-surface-600/50">
+                  <div key={stat.label} className="p-4 rounded-xl bg-surface-800/80 border border-black/[0.06] dark:border-white/[0.06]">
                     <div className="text-2xl font-bold font-mono gradient-text mb-1">{stat.value}</div>
                     <div className="text-xs text-text-muted">{stat.label}</div>
                   </div>
@@ -83,7 +83,7 @@ export function WeeklyChallenge() {
                 ))}
               </ul>
 
-              <div className="p-5 rounded-xl bg-surface-750/50 border border-surface-600/50">
+              <div className="p-5 rounded-xl bg-surface-800/50 border border-black/[0.06] dark:border-white/[0.06]">
                 <p className="text-sm text-text-secondary leading-relaxed">
                   <span className="text-text-primary font-semibold">10+ quiz categories</span> available — Python,
                   JavaScript, Java, C++, DSA, HTML, CSS, Database, AI &amp; ML, Web Development, and more.
