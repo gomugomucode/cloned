@@ -14,7 +14,6 @@ export function ResourcesTab({ techId, techTitle, resourcesData }: ResourcesTabP
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all')
   const [typeFilter, setTypeFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [bookmarksUpdated, setBookmarksUpdated] = useState<number>(0)
 
   // Dynamically resolve icon
   const getIcon = (iconName: string) => {
@@ -31,7 +30,6 @@ export function ResourcesTab({ techId, techTitle, resourcesData }: ResourcesTabP
       subtitle: `${techTitle} Resource • ${resource.difficulty}`,
       savedAt: new Date().toISOString()
     })
-    setBookmarksUpdated(prev => prev + 1)
   }
 
   // Filter sections and their resources

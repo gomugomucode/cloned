@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Award, Lock, ArrowLeft, Printer, RefreshCw, Check, User } from 'lucide-react'
+import { Lock, ArrowLeft, Printer, Check, User } from 'lucide-react'
 import { getTechData } from '../data/db'
 import { getCompletedTopics, getUserName, setUserName } from '../hooks/useProgress'
 import { printStudyCertificate } from '../utils/printCertificate'

@@ -5,10 +5,7 @@ import {
   Award, 
   Clock, 
   BookOpen, 
-  HelpCircle,
-  Briefcase,
-  ChevronRight,
-  TrendingUp
+  ChevronRight
 } from 'lucide-react'
 import { getAllTechnologies, getTechData } from '../data/db'
 import { getCompletedTopics, getWeeksCompleted } from '../hooks/useProgress'

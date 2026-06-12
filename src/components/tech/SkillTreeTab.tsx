@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Award, BookOpen, Check, Copy, HelpCircle, RefreshCw } from 'lucide-react'
+import { BookOpen, Check, Copy, HelpCircle, RefreshCw } from 'lucide-react'
 import type { SkillNode } from '../../data/resources/types'
 import { getSkillStatuses, cycleSkillStatus, type SkillStatus } from '../../hooks/useProgress'
 

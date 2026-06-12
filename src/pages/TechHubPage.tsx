@@ -60,8 +60,6 @@ export function TechHubPage() {
   // Copy feedback state
   const [copiedText, setCopiedText] = useState<string | null>(null)
 
-  // Local state to force re-render when bookmarks change
-  const [bookmarkUpdate, setBookmarkUpdate] = useState(0)
 
   // Record visit
   useEffect(() => {
@@ -460,7 +458,6 @@ export function TechHubPage() {
                           subtitle: `${techTitle} Study Notes`,
                           savedAt: new Date().toISOString()
                         })
-                        setBookmarkUpdate(prev => prev + 1)
                       }}
                       className={`p-2 rounded-xl border transition-all ${
                         isBookmarked(`${techKey}-note-${activeChapter.id}`)
@@ -587,7 +584,6 @@ export function TechHubPage() {
                             subtitle: item.description,
                             savedAt: new Date().toISOString()
                           })
-                          setBookmarkUpdate(prev => prev + 1)
                         }}
                         className={`p-1.5 rounded-lg border transition-all ${
                           isBookmarked(`${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`)
@@ -777,7 +773,6 @@ export function TechHubPage() {
                               subtitle: item.answer,
                               savedAt: new Date().toISOString()
                             })
-                            setBookmarkUpdate(prev => prev + 1)
                           }}
                           className={`p-1 rounded bg-background border transition-all cursor-pointer ${
                             isBookmarked(`${techKey}-interview-${idx}`)
