@@ -1,4 +1,5 @@
 import type { RoadmapData, NoteChapter, CheatsheetCommand, InterviewQuestion, ProjectDetails } from './types'
+import type { TechResourceData } from './resources/types'
 
 import { javascriptRoadmap } from './roadmaps/javascript'
 import { pythonRoadmap } from './roadmaps/python'
@@ -45,6 +46,15 @@ import { gitProjects } from './projects/git'
 import { dockerProjects } from './projects/docker'
 import { awsProjects } from './projects/aws'
 
+import { javascriptResourceData } from './resources/javascript'
+import { pythonResourceData } from './resources/python'
+import { reactResourceData } from './resources/react'
+import { nodejsResourceData } from './resources/nodejs'
+import { typescriptResourceData } from './resources/typescript'
+import { gitResourceData } from './resources/git'
+import { dockerResourceData } from './resources/docker'
+import { awsResourceData } from './resources/aws'
+
 export interface FullTechData {
   id: string
   roadmap: RoadmapData
@@ -52,6 +62,7 @@ export interface FullTechData {
   cheatsheet: CheatsheetCommand[]
   interviews: InterviewQuestion[]
   projects: ProjectDetails[]
+  resources: TechResourceData
 }
 
 const db: Record<string, FullTechData> = {
@@ -62,6 +73,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: javascriptCheatsheet,
     interviews: javascriptInterviews,
     projects: javascriptProjects,
+    resources: javascriptResourceData,
   },
   python: {
     id: 'python',
@@ -70,6 +82,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: pythonCheatsheet,
     interviews: pythonInterviews,
     projects: pythonProjects,
+    resources: pythonResourceData,
   },
   react: {
     id: 'react',
@@ -78,6 +91,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: reactCheatsheet,
     interviews: reactInterviews,
     projects: reactProjects,
+    resources: reactResourceData,
   },
   nodejs: {
     id: 'nodejs',
@@ -86,6 +100,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: nodejsCheatsheet,
     interviews: nodejsInterviews,
     projects: nodejsProjects,
+    resources: nodejsResourceData,
   },
   typescript: {
     id: 'typescript',
@@ -94,6 +109,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: typescriptCheatsheet,
     interviews: typescriptInterviews,
     projects: typescriptProjects,
+    resources: typescriptResourceData,
   },
   git: {
     id: 'git',
@@ -102,6 +118,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: gitCheatsheet,
     interviews: gitInterviews,
     projects: gitProjects,
+    resources: gitResourceData,
   },
   docker: {
     id: 'docker',
@@ -110,6 +127,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: dockerCheatsheet,
     interviews: dockerInterviews,
     projects: dockerProjects,
+    resources: dockerResourceData,
   },
   aws: {
     id: 'aws',
@@ -118,6 +136,7 @@ const db: Record<string, FullTechData> = {
     cheatsheet: awsCheatsheet,
     interviews: awsInterviews,
     projects: awsProjects,
+    resources: awsResourceData,
   },
 }
 
