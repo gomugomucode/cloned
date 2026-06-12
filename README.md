@@ -1,45 +1,51 @@
-# CodeNova — Programming Education Platform
+# StackForge — Programming Education Platform
 
-A modern, dark-themed programming education website inspired by developer learning platforms. Built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**.
+A production-quality, dark-themed programming education UI built with **React**, **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**.
+
+Inspired by modern developer-learning platform design patterns — with **100% original content**, placeholder data, and a generic brand identity.
 
 ## Features
 
-- **Home page** — Hero, animated stats, featured categories, offerings, languages, quizzes/games/tools, roadmaps, articles, visual collections, weekly challenge, and founder preview
-- **About page** — Founder profile, mission statement, achievements, and contact buttons
-- **Blog page** — Article cards with category filters, search, and pagination
-- **Resources page** — PDFs, cheat sheets, downloads, and developer tools with search/filter UI
-- **Responsive design** — Optimized for desktop, tablet, and mobile
-- **Animations** — Scroll-triggered fade-ins and animated stat counters
-- **Accessibility** — Semantic HTML, keyboard-friendly controls, ARIA labels
+### UI Patterns
+- Sticky glassmorphism navigation with animated active states
+- Large animated hero with code preview window
+- Feature cards grid with gradient borders and glow
+- Animated statistics counters
+- Categories showcase
+- Resource & activity cards
+- Blog card layout with filters and pagination
+- Testimonial cards with star ratings
+- FAQ accordion with smooth expand/collapse
+- Dual call-to-action sections
+- Modern responsive footer
+
+### Design System
+- Premium dark theme with purple/cyan accents
+- Glassmorphism (`glass`, `glass-card`, `glass-nav`)
+- Subtle glow effects and gradient typography
+- Framer Motion scroll & hover animations
+- Fully responsive (mobile → desktop)
+- Accessible semantic HTML and ARIA attributes
 
 ## Tech Stack
 
 - React 19 + TypeScript
-- Vite
+- Vite 8
 - Tailwind CSS v4
-- React Router
-- Lucide React (icons)
-- Framer Motion (available for future enhancements)
+- React Router v7
+- Framer Motion
+- Lucide React icons
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 18+ and npm
-
-### Install & Run
-
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open [http://localhost:5173](http://localhost:5173)
 
-### Build for Production
+### Production Build
 
 ```bash
 npm run build
@@ -51,24 +57,26 @@ npm run preview
 ```
 src/
 ├── components/
-│   ├── about/          # Founder & about sections
-│   ├── blog/           # Blog listing & filters
-│   ├── home/           # Home page sections
-│   ├── layout/         # Navbar, Footer, Layout
-│   ├── resources/      # Resources page content
-│   └── ui/             # Reusable UI (Button, Card, SearchInput)
-├── data/               # Content arrays (easy to edit)
-├── hooks/              # useScrollAnimation, useCounter
-├── pages/              # Route pages
-└── utils/              # Icon mapping helper
+│   ├── about/       Founder profile sections
+│   ├── blog/        Blog listing with search/filters
+│   ├── home/        All homepage sections
+│   ├── layout/      Navbar, Footer, Layout, ScrollToTop
+│   ├── resources/   Resources page
+│   └── ui/          Button, Card, Motion, Accordion, SearchInput
+├── data/            Editable content arrays
+├── hooks/           useCounter, useScrollAnimation
+├── pages/           Route pages
+└── utils/           Icon helpers
 ```
 
 ## Customization
 
-All content lives in `src/data/` — edit arrays for stats, articles, resources, languages, roadmaps, and more without touching component logic.
-
-Brand name and navigation links are in `src/data/navigation.ts`.
+| What | Where |
+|------|-------|
+| Brand name & nav | `src/data/navigation.ts` |
+| Stats, articles, FAQ | `src/data/*.ts` |
+| Theme colors | `src/index.css` `@theme` block |
 
 ## License
 
-Original code and placeholder content. Not affiliated with any third-party brand.
+Original frontend code with fictional placeholder content. No backend or authentication required.

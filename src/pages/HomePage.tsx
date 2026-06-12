@@ -8,6 +8,9 @@ import { RoadmapsSection } from '../components/home/RoadmapsSection'
 import { LatestArticles } from '../components/home/LatestArticles'
 import { VisualCollections } from '../components/home/VisualCollections'
 import { WeeklyChallenge } from '../components/home/WeeklyChallenge'
+import { Testimonials } from '../components/home/Testimonials'
+import { FAQ } from '../components/home/FAQ'
+import { CTASection } from '../components/home/CTASection'
 import { FounderPreview } from '../components/about/FounderSection'
 
 export function HomePage() {
@@ -23,7 +26,11 @@ export function HomePage() {
       <LatestArticles />
       <VisualCollections />
       <WeeklyChallenge />
+      <Testimonials />
+      <FAQ />
       <FounderPreview />
+      <CTASection variant="support" />
+      <CTASection />
     </>
   )
 }

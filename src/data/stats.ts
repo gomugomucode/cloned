@@ -5,8 +5,8 @@ export interface Stat {
 }
 
 export const stats: Stat[] = [
-  { value: 5000, suffix: '+', label: 'Active Learners' },
-  { value: 120, suffix: '+', label: 'Courses & Tutorials' },
-  { value: 95, suffix: '%', label: 'Success Rate' },
-  { value: 200, suffix: '+', label: 'Free Resources' },
+  { value: 4800, suffix: '+', label: 'Active Learners' },
+  { value: 95, suffix: '+', label: 'Learning Modules' },
+  { value: 92, suffix: '%', label: 'Completion Rate' },
+  { value: 180, suffix: '+', label: 'Free Resources' },
 ]

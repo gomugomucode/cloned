@@ -1,50 +1,55 @@
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Code2, GitFork, Share2, Mail, MessageCircle } from 'lucide-react'
+import { Layers, GitFork, Share2, Mail, MessageCircle } from 'lucide-react'
 import { brandName, brandTagline, navLinks } from '../../data/navigation'
+import { FadeIn } from '../ui/Motion'
 
 const footerLinks = [
   { label: 'Courses', href: '/resources' },
   { label: 'Quizzes', href: '/#weekly-challenge' },
   { label: 'Roadmaps', href: '/#roadmaps' },
   { label: 'Blog', href: '/blog' },
+  { label: 'FAQ', href: '/#faq' },
   { label: 'About', href: '/about' },
 ]
 
 export function Footer() {
   return (
-    <footer className="border-t border-surface-700/50 bg-surface-850">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="border-t border-white/[0.06] bg-surface-950/80 backdrop-blur-xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center">
-                <Code2 className="w-5 h-5 text-white" />
+          <FadeIn className="lg:col-span-2">
+            <Link to="/" className="flex items-center gap-2.5 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center">
+                <Layers className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-text-primary">{brandName}</span>
             </Link>
-            <p className="text-text-secondary max-w-md mb-6 leading-relaxed">
+            <p className="text-text-secondary max-w-md mb-6 leading-relaxed text-sm">
               {brandTagline}. Free courses, quizzes, games, roadmaps, and resources to help you become a better developer.
             </p>
             <div className="flex gap-3">
               {[
                 { icon: GitFork, label: 'GitHub' },
-                { icon: Share2, label: 'Twitter' },
+                { icon: Share2, label: 'Social' },
                 { icon: Mail, label: 'Email' },
               ].map(({ icon: Icon, label }) => (
-                <a
+                <motion.a
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="w-10 h-10 rounded-lg bg-surface-750 border border-surface-600 flex items-center justify-center text-text-secondary hover:text-accent-purple hover:border-accent-purple/40 transition-all"
+                  whileHover={{ scale: 1.08, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-10 h-10 rounded-xl glass flex items-center justify-center text-text-secondary hover:text-accent-purple transition-colors"
                 >
-                  <Icon className="w-5 h-5" />
-                </a>
+                  <Icon className="w-4 h-4" />
+                </motion.a>
               ))}
             </div>
-          </div>
+          </FadeIn>
 
-          <div>
-            <h3 className="text-text-primary font-semibold mb-4">Quick Links</h3>
+          <FadeIn delay={0.1}>
+            <h3 className="text-text-primary font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
             <ul className="space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.label}>
@@ -57,28 +62,30 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </FadeIn>
 
-          <div>
-            <h3 className="text-text-primary font-semibold mb-4">Get in Touch</h3>
+          <FadeIn delay={0.15}>
+            <h3 className="text-text-primary font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h3>
             <p className="text-text-secondary text-sm mb-4 leading-relaxed">
-              Have questions or suggestions? Reach out anytime — we typically reply within minutes.
+              Questions or feedback? We are happy to help.
             </p>
-            <a
+            <motion.a
               href="#"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600/10 text-emerald-400 border border-emerald-600/30 text-sm font-medium hover:bg-emerald-600/20 transition-all"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 text-sm font-medium hover:bg-emerald-500/15 transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
               Message us
-            </a>
-          </div>
+            </motion.a>
+          </FadeIn>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-surface-700/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-14 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-text-muted text-sm">
             &copy; {new Date().getFullYear()} {brandName}. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

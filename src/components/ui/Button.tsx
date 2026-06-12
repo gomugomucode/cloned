@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import type { ReactNode } from 'react'
 
@@ -18,18 +19,24 @@ interface ButtonProps {
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    'bg-gradient-to-r from-accent-purple to-accent-violet text-white hover:opacity-90 shadow-lg shadow-accent-purple/25',
+    'bg-gradient-to-r from-accent-purple to-accent-violet text-white shadow-lg shadow-accent-purple/25 hover:shadow-accent-purple/40',
   secondary:
-    'bg-surface-750 text-text-primary border border-surface-600 hover:border-accent-purple/50 hover:bg-surface-700',
-  ghost: 'text-text-secondary hover:text-text-primary hover:bg-surface-750',
+    'glass text-text-primary hover:border-white/12 hover:bg-white/[0.05]',
+  ghost: 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04]',
   outline:
-    'border border-accent-purple/40 text-accent-purple hover:bg-accent-purple/10 hover:border-accent-purple',
+    'border border-accent-purple/40 text-accent-purple hover:bg-accent-purple/10 hover:border-accent-purple/60',
 }
 
 const sizes: Record<ButtonSize, string> = {
   sm: 'px-4 py-2 text-sm',
   md: 'px-6 py-2.5 text-sm',
   lg: 'px-8 py-3 text-base',
+}
+
+const motionProps = {
+  whileHover: { scale: 1.02, y: -1 },
+  whileTap: { scale: 0.98 },
+  transition: { type: 'spring' as const, stiffness: 400, damping: 25 },
 }
 
 export function Button({
@@ -43,27 +50,35 @@ export function Button({
   type = 'button',
   ariaLabel,
 }: ButtonProps) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-purple focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900 ${variants[variant]} ${sizes[size]} ${className}`
+  const classes = `inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-purple focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900 ${variants[variant]} ${sizes[size]} ${className}`
 
   if (to) {
     return (
-      <Link to={to} className={classes} aria-label={ariaLabel}>
-        {children}
-      </Link>
+      <motion.div {...motionProps} className="inline-flex">
+        <Link to={to} className={classes} aria-label={ariaLabel}>
+          {children}
+        </Link>
+      </motion.div>
     )
   }
 
   if (href) {
     return (
-      <a href={href} className={classes} aria-label={ariaLabel}>
+      <motion.a href={href} className={classes} aria-label={ariaLabel} {...motionProps}>
         {children}
-      </a>
+      </motion.a>
     )
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} aria-label={ariaLabel}>
+    <motion.button
+      type={type}
+      className={classes}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      {...motionProps}
+    >
       {children}
-    </button>
+    </motion.button>
   )
 }

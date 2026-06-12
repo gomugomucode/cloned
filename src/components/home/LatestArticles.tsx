@@ -68,7 +68,7 @@ export function LatestArticles() {
           badge="From the Blog"
           title="Latest Articles"
           highlight="& Tutorials"
-          description="Deep dives, tutorials, and insights from the CodeNova team — level up your knowledge."
+          description="Deep dives, tutorials, and insights from our editorial team — level up your knowledge."
         />
 
         <div

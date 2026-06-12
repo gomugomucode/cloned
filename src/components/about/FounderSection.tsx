@@ -64,7 +64,7 @@ export function AboutContent() {
     <div className="py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          badge="About CodeNova"
+          badge="About StackForge"
           title="Our Mission"
           highlight="& Vision"
           description={missionStatement}
@@ -146,7 +146,7 @@ export function AboutContent() {
                 Reach out through any of the channels below.
               </p>
               <div className="space-y-3">
-                <Button href="mailto:hello@codenova.dev" variant="primary" className="w-full">
+                <Button href="mailto:hello@stackforge.dev" variant="primary" className="w-full">
                   Send an Email
                 </Button>
                 <Button href="#" variant="secondary" className="w-full">

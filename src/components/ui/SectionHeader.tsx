@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { motion } from 'framer-motion'
+import { FadeIn } from './Motion'
 
 interface SectionHeaderProps {
   badge?: string
@@ -20,13 +22,18 @@ export function SectionHeader({
   const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left'
 
   return (
-    <div className={`max-w-3xl mb-12 md:mb-16 ${alignClass} ${className}`}>
+    <FadeIn className={`max-w-3xl mb-12 md:mb-16 ${alignClass} ${className}`}>
       {badge && (
-        <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent-purple/10 text-accent-purple border border-accent-purple/20">
+        <motion.span
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider glass text-accent-purple"
+        >
           {badge}
-        </span>
+        </motion.span>
       )}
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-4">
+      <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-text-primary mb-4 leading-tight">
         {title}
         {highlight && (
           <>
@@ -38,7 +45,7 @@ export function SectionHeader({
       {description && (
         <p className="text-text-secondary text-base md:text-lg leading-relaxed">{description}</p>
       )}
-    </div>
+    </FadeIn>
   )
 }
 
@@ -50,13 +57,12 @@ interface CardProps {
 }
 
 export function Card({ children, className = '', hover = true, glow = 'none' }: CardProps) {
-  const glowClass =
-    glow === 'purple' ? 'glow-purple' : glow === 'cyan' ? 'glow-cyan' : ''
+  const glowClass = glow === 'purple' ? 'glow-purple' : glow === 'cyan' ? 'glow-cyan' : ''
 
   return (
     <div
-      className={`gradient-border rounded-2xl p-6 md:p-8 bg-surface-800/80 backdrop-blur-sm ${
-        hover ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent-purple/5' : ''
+      className={`gradient-border rounded-2xl p-6 md:p-8 glass-card ${
+        hover ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent-purple/5 hover:border-white/10' : ''
       } ${glowClass} ${className}`}
     >
       {children}

@@ -10,5 +10,5 @@ export const navLinks: NavLink[] = [
   { label: 'Resources', href: '/resources' },
 ]
 
-export const brandName = 'CodeNova'
-export const brandTagline = 'Learn Programming Interactively'
+export const brandName = 'StackForge'
+export const brandTagline = 'Master Code. Build Faster.'
