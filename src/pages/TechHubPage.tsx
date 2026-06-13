@@ -845,7 +845,7 @@ export function TechHubPage() {
                           title="Bookmark Question"
                         >
                           <Bookmark className="w-3 h-3" fill={isBookmarked(`${techKey}-interview-${idx}`) ? "currentColor" : "none"} />
-                        </div>>
+                        </div>
 
                         <span className="font-bold text-text-primary text-sm md:text-base">
                           {item.question}
