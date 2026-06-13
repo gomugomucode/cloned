@@ -414,14 +414,16 @@ export function TechHubPage() {
             </div>
 
             <RoadmapVisualizer 
-              nodes={phases.flatMap(phase => phase.topics.map(topic => ({
-                id: topic.name.toLowerCase().replace(/\s+/g, '-'),
-                title: topic.name,
-                description: topic.description || '',
-                status: completedTopics[topic.name] ? 'completed' : (phase.topics[0].name === topic.name ? 'current' : 'locked'),
-                links: topic.resources || [],
-                dependencies: [] // simplified
-              }))}
+              nodes={phases.flatMap(phase => 
+                phase.topics.map(topic => ({
+                  id: topic.name.toLowerCase().replace(/\s+/g, '-'),
+                  title: topic.name,
+                  description: topic.description || '',
+                  status: completedTopics[topic.name] ? 'completed' : (phase.topics[0].name === topic.name ? 'current' : 'locked'),
+                  links: topic.resources || [],
+                  dependencies: [],
+                }))
+              )}
             />
 
             <Card className="bg-gradient-to-r from-accent-purple/5 to-accent-violet/5 border-dashed border-accent-purple/30 text-center py-8 mt-12">
