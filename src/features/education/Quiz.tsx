@@ -67,7 +67,7 @@ export const Quiz: React.FC<QuizProps> = ({ questions, onComplete }) => {
         <span className="text-xs font-bold uppercase tracking-widest text-indigo-400">Question {currentQuestion + 1}/{questions.length}</span>
         <div className="h-2 w-32 bg-white/10 rounded-full overflow-hidden">
           <div className="h-full bg-indigo-500 transition-all duration-500" style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }} />
-        </div
+        </div>
       </div>
 
       <h3 className="text-xl font-bold text-white leading-tight">{q.text}</h3>
