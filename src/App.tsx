@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { Layout } from './components/layout/Layout'
 import { ScrollToTop } from './components/layout/ScrollToTop'
-import { PageLoadingSpinner } from './components/ui/PageLoadingSpinner'
+import { ProgressProvider } from './context/ProgressContext'
+import { AchievementProvider } from './context/AchievementContext'
+
 
 // Lazy loaded page components
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })))
@@ -23,37 +25,41 @@ const CertificatePage = lazy(() => import('./pages/CertificatePage').then(m => (
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Suspense fallback={<PageLoadingSpinner />}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            
-            {/* Dashboard & Comparison & Bookmarks */}
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/bookmarks" element={<BookmarksPage />} />
-            <Route path="/compare" element={<ComparePage />} />
-            <Route path="/certificate/:technology" element={<CertificatePage />} />
-            
-            {/* Separate Academy Pages */}
-            <Route path="/roadmaps" element={<RoadmapsPage />} />
-            <Route path="/resources" element={<RoadmapsPage />} /> {/* Backward compatibility redirect */}
-            <Route path="/notes" element={<NotesPage />} />
-            <Route path="/cheatsheets" element={<CheatsheetsPage />} />
-            <Route path="/interview-prep" element={<InterviewPrepPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/certifications" element={<CertificationsPage />} />
-            <Route path="/tools" element={<ToolsPage />} />
-            
-            {/* Tech Hub Page */}
-            <Route path="/learn/:technology" element={<TechHubPage />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <ProgressProvider>
+      <AchievementProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Suspense fallback={<PageLoadingSpinner />}>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                
+                {/* Dashboard & Comparison & Bookmarks */}
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/bookmarks" element={<BookmarksPage />} />
+                <Route path="/compare" element={<ComparePage />} />
+                <Route path="/certificate/:technology" element={<CertificatePage />} />
+                
+                {/* Separate Academy Pages */}
+                <Route path="/roadmaps" element={<RoadmapsPage />} />
+                <Route path="/resources" element={<RoadmapsPage />} /> {/* Backward compatibility redirect */}
+                <Route path="/notes" element={<NotesPage />} />
+                <Route path="/cheatsheets" element={<CheatsheetsPage />} />
+                <Route path="/interview-prep" element={<InterviewPrepPage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/certifications" element={<CertificationsPage />} />
+                <Route path="/tools" element={<ToolsPage />} />
+                
+                {/* Tech Hub Page */}
+                <Route path="/learn/:technology" element={<TechHubPage />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </AchievementProvider>
+    </ProgressProvider>
   )
 }
 
