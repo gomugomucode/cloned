@@ -40,7 +40,7 @@ const HubHeader: React.FC = () => {
           <button className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold flex items-center gap-2 hover:bg-indigo-500 transition-all active:scale-95">
             Explore <ArrowRight size={18} />
           </button>
-        </div}
+        </div>
       </div>
     </div>
   );
