@@ -1,96 +1,59 @@
-import { Link } from 'react-router-dom'
-import { Layers, ArrowRight, Star } from 'lucide-react'
+import { useState } from 'react'
+import { Search } from 'lucide-react'
 import { SEOHead } from '../components/ui/SEOHead'
 import { SectionHeader } from '../components/ui/SectionHeader'
-
-const categories = [
-  {
-    name: 'Frontend',
-    items: [
-      { slug: 'javascript', title: 'JavaScript Developer', description: 'Master logic, asynchronous requests, and event loops.', level: 'Beginner', duration: '3 months', steps: 12, color: 'from-violet-500/20 to-purple-600/10' },
-      { slug: 'react', title: 'React Developer', description: 'Build user interfaces, hooks, state, and components.', level: 'Intermediate', duration: '2 months', steps: 8, color: 'from-cyan-500/20 to-blue-600/10' },
-      { slug: 'typescript', title: 'TypeScript Engineer', description: 'Add structural typings and generics for large apps.', level: 'Intermediate', duration: '2 months', steps: 9, color: 'from-blue-500/20 to-indigo-600/10' }
-    ]
-  },
-  {
-    name: 'Backend',
-    items: [
-      { slug: 'nodejs', title: 'Node.js Backend Developer', description: 'Handle database integrations, microservices, and Express routing.', level: 'Intermediate', duration: '3 months', steps: 10, color: 'from-emerald-500/20 to-teal-600/10' },
-      { slug: 'python', title: 'Python Programmer', description: 'Write servers, CLI scripts, and clean logic.', level: 'Beginner', duration: '3 months', steps: 11, color: 'from-amber-500/20 to-orange-600/10' }
-    ]
-  },
-  {
-    name: 'Cloud & DevOps',
-    items: [
-      { slug: 'aws', title: 'AWS Architect', description: 'Deploy serverless logic, virtual instances, and networks.', level: 'Advanced', duration: '4 months', steps: 9, color: 'from-indigo-500/20 to-violet-600/10' },
-      { slug: 'docker', title: 'Docker Containers', description: 'Package apps in containers, build images, and compose files.', level: 'Intermediate', duration: '2 months', steps: 8, color: 'from-sky-500/20 to-blue-600/10' },
-      { slug: 'git', title: 'Git & Collaboration', description: 'Master branch operations, rebase timelines, and team commits.', level: 'Beginner', duration: '1 month', steps: 9, color: 'from-red-500/20 to-rose-600/10' }
-    ]
-  }
-]
+import ContentCard from '../components/ui/ContentCard'
+import { roadmaps } from '../data/roadmaps'
+import { useContentSearch } from '../core/hooks/useContentSearch'
 
 export function RoadmapsPage() {
+  const { query, setQuery, filteredItems } = useContentSearch(roadmaps);
+
   return (
-    <>
+    <div className="min-h-screen bg-slate-950 py-16 md:py-24">
       <SEOHead
-        title="Interactive Programming Roadmaps & Syllabus Guides"
+        title="Interactive Programming Roadmaps | StackForge"
         description="Choose a structured syllabus track to specialize in Frontend, Backend, DevOps, or Cloud Engineering."
       />
 
-      <div className="py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            badge="Roadmaps"
-            title="Syllabus &"
-            highlight="Developer Tracks"
-            description="Follow step-by-step visual roadmaps. Know exactly what to learn next."
-          />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          badge="Roadmaps"
+          title="Structured"
+          highlight="Learning Paths"
+          description="Stop wandering through random tutorials. Follow expert-curated roadmaps to reach your goals faster."
+        />
 
-          <div className="max-w-6xl mx-auto space-y-12">
-            {categories.map((cat, idx) => (
-              <div key={idx} className="space-y-6">
-                <h2 className="text-2xl font-bold text-text-primary border-b border-black/[0.05] dark:border-white/[0.05] pb-2 flex items-center gap-2">
-                  <Star className="w-5 h-5 text-accent-purple" /> {cat.name}
-                </h2>
+        <div className="max-w-7xl mx-auto mt-12 space-y-8">
+          <div className="relative max-w-md mx-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search roadmaps..." 
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {cat.items.map((item) => (
-                    <Link
-                      key={item.slug}
-                      to={`/learn/${item.slug}?tab=roadmap`}
-                      className={`group relative block overflow-hidden rounded-2xl border border-black/[0.06] dark:border-white/[0.06] bg-gradient-to-br ${item.color} p-6 hover:border-accent-purple/40 transition-all duration-300 hover:-translate-y-1`}
-                    >
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-surface-850/80 text-text-secondary border border-black/[0.06] dark:border-white/[0.06]">
-                          {item.level}
-                        </span>
-                        <span className="text-xs text-text-muted">{item.duration}</span>
-                      </div>
-
-                      <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-accent-purple transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-text-secondary text-sm leading-relaxed mb-6">
-                        {item.description}
-                      </p>
-
-                      <div className="flex items-center justify-between mt-auto">
-                        <div className="flex items-center gap-2 text-xs text-text-muted">
-                          <Layers className="w-3.5 h-3.5" />
-                          <span>{item.steps} stages</span>
-                        </div>
-                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent-purple">
-                          View path <ArrowRight className="w-4 h-4" />
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredItems.map((roadmap) => (
+              <ContentCard 
+                key={roadmap.id} 
+                content={roadmap} 
+                type="roadmap" 
+              />
             ))}
           </div>
+          
+          {filteredItems.length === 0 && (
+            <div className="text-center py-20 text-gray-500">
+              <Search size={48} className="mx-auto mb-4 opacity-20" />
+              <p>No roadmaps found matching your search.</p>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   )
 }

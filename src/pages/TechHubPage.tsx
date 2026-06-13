@@ -37,6 +37,9 @@ import { AIAssistant } from '../components/tech/AIAssistant'
 import { MobileTabBar } from '../components/tech/MobileTabBar'
 import { ChapterQuiz } from '../components/tech/ChapterQuiz'
 import { useAchievementToast } from '../components/ui/AchievementContext'
+import { RoadmapVisualizer } from '../features/learning-paths/RoadmapVisualizer';
+import { CheatsheetViewer } from '../features/cheatsheet-viewer/CheatsheetViewer';
+
 
 // V2 Progress Hooks
 import { 
@@ -67,10 +70,6 @@ export function TechHubPage() {
 
   // Interview collapsed states
   const [openQuestionIndex, setOpenQuestionIndex] = useState<number | null>(null)
-
-  // Cheatsheets search & filter states
-  const [cheatsheetSearch, setCheatsheetSearch] = useState('')
-  const [selectedCheatsheetCat, setSelectedCheatsheetCat] = useState('All')
 
   // Copy feedback state
   const [copiedText, setCopiedText] = useState<string | null>(null)
@@ -123,24 +122,6 @@ export function TechHubPage() {
   useEffect(() => {
     localStorage.setItem(`stackforge-completed-${techKey}`, JSON.stringify(completedTopics))
   }, [completedTopics, techKey])
-
-  // Cheatsheet categories (must be before early returns)
-  const cheatsheetCategories = useMemo(() => {
-    if (!data) return ['All']
-    const cats = new Set(data.cheatsheet.map((c) => c.category))
-    return ['All', ...Array.from(cats)]
-  }, [data])
-
-  const filteredCheatsheet = useMemo(() => {
-    if (!data) return []
-    return data.cheatsheet.filter((item) => {
-      const matchSearch =
-        item.command.toLowerCase().includes(cheatsheetSearch.toLowerCase()) ||
-        item.description.toLowerCase().includes(cheatsheetSearch.toLowerCase())
-      const matchCat = selectedCheatsheetCat === 'All' || item.category === selectedCheatsheetCat
-      return matchSearch && matchCat
-    })
-  }, [data, cheatsheetSearch, selectedCheatsheetCat])
 
   const setTab = useCallback((tabName: string) => {
     setSearchParams({ tab: tabName })
@@ -425,83 +406,24 @@ export function TechHubPage() {
             <div className="flex justify-between items-center mb-8">
               <div>
                 <h2 className="text-2xl font-bold text-text-primary">Syllabus Path</h2>
-                <p className="text-text-secondary text-sm">Check off topics as you learn to track your progress.</p>
+                <p className="text-text-secondary text-sm">Visual progression of your learning journey.</p>
               </div>
               <Button onClick={() => { printTechRoadmapPdf(techKey, data); recordPdfDownload(techKey, data.roadmap.overview.title); }} variant="outline" size="sm" className="gap-2 shrink-0">
                 <Download className="w-4 h-4" /> Print PDF
               </Button>
             </div>
 
-            {/* Interactive Timeline Layout */}
-            <div className="relative border-l border-surface-800 pl-6 md:pl-8 space-y-12">
-              {phases.map((phase, phaseIdx) => (
-                <div key={phaseIdx} className="relative">
-                  {/* Timeline bullet dot */}
-                  <span className="absolute -left-[37px] md:-left-[45px] top-1.5 w-6 h-6 rounded-full bg-surface-900 border-2 border-accent-purple flex items-center justify-center">
-                    <span className="w-2.5 h-2.5 rounded-full bg-accent-purple" />
-                  </span>
+            <RoadmapVisualizer 
+              nodes={phases.flatMap(phase => phase.topics.map(topic => ({
+                id: topic.name.toLowerCase().replace(/\s+/g, '-'),
+                title: topic.name,
+                description: topic.description || '',
+                status: completedTopics[topic.name] ? 'completed' : (phase.topics[0].name === topic.name ? 'current' : 'locked'),
+                links: topic.resources || [],
+                dependencies: [] // simplified
+              }))}
+            />
 
-                  <div>
-                    <h3 className="text-lg font-extrabold text-text-primary mb-1">{phase.title}</h3>
-                    <p className="text-text-secondary text-sm mb-6">{phase.description}</p>
-
-                    {/* Progress Cards */}
-                    <div className="grid grid-cols-1 gap-4">
-                      {phase.topics.map((topic, topicIdx) => {
-                        const isCompleted = !!completedTopics[topic.name]
-                        return (
-                          <div
-                            key={topicIdx}
-                            onClick={() => toggleTopic(topic.name)}
-                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
-                              isCompleted
-                                ? 'bg-accent-purple/5 border-accent-purple/30 text-text-primary'
-                                : 'bg-surface-950/40 border-black/[0.05] dark:border-white/[0.05] hover:border-accent-purple/30 text-text-primary'
-                            }`}
-                          >
-                            <button
-                              type="button"
-                              className="mt-0.5 text-accent-purple focus:outline-none shrink-0"
-                              aria-label={isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
-                            >
-                              {isCompleted ? (
-                                <CheckCircle className="w-5 h-5 fill-accent-purple text-white" />
-                              ) : (
-                                <Circle className="w-5 h-5 text-text-muted hover:text-accent-purple" />
-                              )}
-                            </button>
-                            <div className="flex-1">
-                              <h4 className={`font-semibold text-sm ${isCompleted ? 'line-through text-text-secondary' : ''}`}>
-                                {topic.name}
-                              </h4>
-                              {topic.description && (
-                                <p className="text-xs text-text-secondary mt-1 leading-relaxed">
-                                  {topic.description}
-                                </p>
-                              )}
-                              {topic.resources && topic.resources.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                  {topic.resources.map((res, rIdx) => (
-                                    <span
-                                      key={rIdx}
-                                      className="inline-flex items-center gap-0.5 text-[10px] font-medium bg-surface-800 text-text-secondary px-2 py-0.5 rounded border border-black/[0.05] dark:border-white/[0.05]"
-                                    >
-                                      {res}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Bottom PDF Download Card */}
             <Card className="bg-gradient-to-r from-accent-purple/5 to-accent-violet/5 border-dashed border-accent-purple/30 text-center py-8 mt-12">
               <h3 className="text-lg font-bold text-text-primary mb-2">Printable Reference File</h3>
               <p className="text-text-secondary text-sm mb-6 max-w-md mx-auto">
@@ -752,104 +674,27 @@ export function TechHubPage() {
 
         {/* CHEATSHEETS TAB */}
         {activeTab === 'cheatsheets' && (
-          <div className="space-y-6">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              <div className="relative w-full md:max-w-md">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-                <input
-                  type="text"
-                  placeholder="Search commands or syntax..."
-                  value={cheatsheetSearch}
-                  onChange={(e) => setCheatsheetSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-950 border border-black/[0.06] dark:border-white/[0.06] text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-purple/20"
-                />
-              </div>
-
-              {/* Tag filters */}
-              <div className="flex flex-wrap gap-2 w-full md:w-auto">
-                {cheatsheetCategories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCheatsheetCat(cat)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                      selectedCheatsheetCat === cat
-                        ? 'bg-accent-purple/15 text-accent-purple border border-accent-purple/35'
-                        : 'glass text-text-secondary hover:text-text-primary'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* List grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredCheatsheet.map((item, idx) => (
-                <Card key={idx} className="flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-accent-purple bg-accent-purple/10 px-2 py-0.5 rounded">
-                        {item.category}
-                      </span>
-                      <button
-                        onClick={() => {
-                          toggleBookmark({
-                            id: `${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`,
-                            type: 'cheatsheet',
-                            techId: techKey,
-                            title: item.command,
-                            subtitle: item.description,
-                            savedAt: new Date().toISOString()
-                          })
-                        }}
-                        className={`p-1.5 rounded-lg border transition-all ${
-                          isBookmarked(`${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`)
-                            ? 'bg-accent-purple/20 border-accent-purple/30 text-accent-purple'
-                            : 'bg-transparent border-border/30 text-text-secondary hover:text-text-primary'
-                        }`}
-                        title="Bookmark Command"
-                      >
-                        <Bookmark className="w-3.5 h-3.5" fill={isBookmarked(`${techKey}-cheatsheet-${item.command.replace(/\s+/g, '-').toLowerCase()}`) ? "currentColor" : "none"} />
-                      </button>
-                    </div>
-                    <h3 className="font-mono font-bold text-sm text-text-primary mb-2 bg-surface-850 p-2 rounded border border-black/[0.03] dark:border-white/[0.03]">
-                      {item.command}
-                    </h3>
-                    <p className="text-text-secondary text-xs leading-relaxed mb-4">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {item.example && (
-                    <div className="relative mt-auto">
-                      <pre className="bg-surface-950 p-3.5 rounded-lg font-mono text-xs text-[#94a3b8] overflow-x-auto">
-                        {item.example}
-                      </pre>
-                      <button
-                        onClick={() => handleCopy(item.example || '')}
-                        className="absolute right-2.5 top-2.5 p-1 rounded bg-surface-900/60 hover:bg-surface-900 text-text-muted hover:text-text-primary transition-all"
-                        title="Copy example"
-                      >
-                        {copiedText === item.example ? (
-                          <Check className="w-3.5 h-3.5 text-accent-emerald" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
-                    </div>
-                  )}
-                </Card>
-              ))}
-
-              {filteredCheatsheet.length === 0 && (
-                <div className="col-span-2 text-center py-12 text-text-secondary">
-                  No matching cheatsheet items found.
-                </div>
-              )}
-            </div>
-            </div>
-          )}
+          <CheatsheetViewer 
+            cheatsheet={{
+              id: techKey,
+              title: `${techTitle} Cheat Sheet`,
+              description: `Quick reference for ${techTitle} commands and syntax.`,
+              category: 'Web Development',
+              level: 'Intermediate',
+              thumbnail: '', 
+              tags: [],
+              lastUpdated: '2023',
+              type: 'cheatsheet',
+              items: data.cheatsheet.map((item, idx) => ({
+                id: `cs-${idx}`,
+                title: item.command,
+                code: item.example || item.command,
+                description: item.description,
+                category: item.category
+              }))
+            }} 
+          />
+        )}
 
         {/* PROJECTS TAB */}
         {activeTab === 'projects' && (

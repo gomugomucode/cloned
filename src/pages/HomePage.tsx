@@ -1,41 +1,60 @@
-import { Hero } from '../components/home/Hero'
-import { StatsSection } from '../components/home/StatsSection'
-import { FeaturedCategories } from '../components/home/FeaturedCategories'
-import { WhatWeOffer } from '../components/home/WhatWeOffer'
-import { PopularLanguages } from '../components/home/PopularLanguages'
-import { QuizGamesTools } from '../components/home/QuizGamesTools'
-import { RoadmapsSection } from '../components/home/RoadmapsSection'
-import { LatestArticles } from '../components/home/LatestArticles'
-import { VisualCollections } from '../components/home/VisualCollections'
-import { WeeklyChallenge } from '../components/home/WeeklyChallenge'
-import { Testimonials } from '../components/home/Testimonials'
-import { FAQ } from '../components/home/FAQ'
-import { CTASection } from '../components/home/CTASection'
-import { FounderPreview } from '../components/about/FounderSection'
 import { SEOHead } from '../components/ui/SEOHead'
+import HubHeader from '../features/learning-paths/HubHeader'
+import LearningPathGrid from '../features/learning-paths/LearningPathGrid'
+import { roadmaps } from '../data/roadmaps'
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { Book, Layout, Code2, Terminal, Layers, Cpu } from 'lucide-react'
+
+const QuickAccess = () => {
+  const links = [
+    { title: 'Cheatsheets', icon: <Code2 size={20} />, color: 'text-blue-400', path: '/cheatsheets', desc: 'Quick reference for syntax' },
+    { title: 'Tutorials', icon: <Book size={20} />, color: 'text-green-400', path: '/tutorials', desc: 'Step-by-step deep dives' },
+    { title: 'Interview Prep', icon: <Terminal size={20} />, color: 'text-purple-400', path: '/interview-prep', desc: 'Crack the coding round' },
+    { title: 'Dev Tools', icon: <Layers size={20} />, color: 'text-orange-400', path: '/tools', desc: 'Essential engineering tools' },
+    { title: 'Projects', icon: <Layout size={20} />, color: 'text-pink-400', path: '/projects', desc: 'Build production-grade apps' },
+    { title: 'Tech Hub', icon: <Cpu size={20} />, color: 'text-cyan-400', path: '/tech-hub', desc: 'Latest in software architecture' },
+  ]
+
+  return (
+    <section className="py-16 px-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {links.map((link, i) => (
+          <Link 
+            key={link.title} 
+            to={link.path} 
+            className="group p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-white/10 transition-all text-center flex flex-col items-center gap-3"
+          >
+            <div className={`p-3 rounded-xl bg-white/5 group-hover:scale-110 transition-transform ${link.color}`}>
+              {link.icon}
+            </div>
+            <div>
+              <h4 className="text-white font-bold text-sm">{link.title}</h4>
+              <p className="text-gray-500 text-[10px] uppercase tracking-tighter">{link.desc}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 export function HomePage() {
   return (
-    <>
+    <div className="min-h-screen bg-slate-950">
       <SEOHead
-        title="Master Modern Software Development"
-        description="Structured programming courses, interactive quizzes, visual roadmaps, and cheat sheets to help you learn React, Python, DevOps, and more for free."
+        title="StackForge | Premium Developer Education Platform"
+        description="Curated learning paths, expert-led tutorials, and professional cheatsheets for modern software engineers."
       />
-      <Hero />
-      <StatsSection />
-      <FeaturedCategories />
-      <WhatWeOffer />
-      <PopularLanguages />
-      <QuizGamesTools />
-      <RoadmapsSection />
-      <LatestArticles />
-      <VisualCollections />
-      <WeeklyChallenge />
-      <Testimonials />
-      <FAQ />
-      <FounderPreview />
-      <CTASection variant="support" />
-      <CTASection />
-    </>
+      
+      <HubHeader />
+      
+      <div className="max-w-7xl mx-auto">
+        <LearningPathGrid roadmaps={roadmaps} />
+        <QuickAccess />
+      </div>
+      
+      {/* Footer/CTA can be added here */}
+    </div>
   )
 }

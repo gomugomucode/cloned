@@ -1,82 +1,59 @@
-import { Link } from 'react-router-dom'
-import { Terminal, Download, ArrowRight } from 'lucide-react'
+import { useState } from 'react'
+import { Search } from 'lucide-react'
 import { SEOHead } from '../components/ui/SEOHead'
-import { SectionHeader, Card } from '../components/ui/SectionHeader'
-import { Button } from '../components/ui/Button'
-import { getTechData } from '../data/db'
-import { printTechRoadmapPdf } from '../utils/printPdf'
-
-const sheets = [
-  { slug: 'javascript', title: 'JavaScript Methods Cheat Sheet', desc: 'Quick syntax for map(), filter(), Object.keys(), JSON parse/stringify.' },
-  { slug: 'python', title: 'Python Syntax Cheat Sheet', desc: 'Reference for list comprehensions, f-strings, list append, dict.get().' },
-  { slug: 'react', title: 'React Hooks Cheat Sheet', desc: 'Summary of hooks usage for useState, useEffect, useContext, useRef.' },
-  { slug: 'nodejs', title: 'Node.js Core APIs Cheat Sheet', desc: 'Quick commands for fs.readFile, fs.writeFileSync, path.join.' },
-  { slug: 'typescript', title: 'TypeScript Typings Cheat Sheet', desc: 'Declaration structures for interface, type, Partial, Readonly.' },
-  { slug: 'git', title: 'Git Commands Cheat Sheet', desc: 'Commands list for git init, clone, branch, merge, commit, stash.' },
-  { slug: 'docker', title: 'Docker Containers Cheat Sheet', desc: 'Syntax reference for docker run, build, docker-compose commands.' },
-  { slug: 'aws', title: 'AWS Resource Commands Cheat Sheet', desc: 'Lookup reference for s3 sync, ls, ec2 describe, lambda invoke.' }
-]
+import { SectionHeader } from '../components/ui/SectionHeader'
+import ContentCard from '../components/ui/ContentCard'
+import { cheatsheets } from '../data/cheatsheets'
+import { useContentSearch } from '../core/hooks/useContentSearch'
 
 export function CheatsheetsPage() {
-  const handlePdfDownload = async (slug: string) => {
-    const data = await getTechData(slug)
-    if (data) {
-      printTechRoadmapPdf(slug, data)
-    }
-  }
+  const { query, setQuery, filteredItems } = useContentSearch(cheatsheets);
 
   return (
-    <>
+    <div className="min-h-screen bg-slate-950 py-16 md:py-24">
       <SEOHead
-        title="Developer Cheatsheets & Quick Syntax Reference Guides"
-        description="Access quick reference guides, commands checklists, and syntax cheatsheets."
+        title="Developer Cheatsheets | StackForge"
+        description="Quick reference guides, command checklists, and syntax cards for modern developers."
       />
 
-      <div className="py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            badge="Cheat Sheets"
-            title="Quick Reference"
-            highlight="& Syntax Cards"
-            description="Speed up your coding workflow. Search methods, copy CLI arguments, and download offline PDF cheatsheets."
-          />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          badge="Cheat Sheets"
+          title="Quick Reference"
+          highlight="& Syntax Cards"
+          description="Speed up your coding workflow. Access instant syntax lookups and copy-pasteable snippets."
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {sheets.map((item) => (
-              <Card key={item.slug} className="flex flex-col justify-between h-full">
-                <div>
-                  <div className="w-11 h-11 rounded-xl bg-accent-cyan/10 flex items-center justify-center mb-4">
-                    <Terminal className="w-5 h-5 text-accent-cyan" />
-                  </div>
-                  <h3 className="text-xl font-bold text-text-primary mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-text-secondary text-sm leading-relaxed mb-6">
-                    {item.desc}
-                  </p>
-                </div>
+        <div className="max-w-7xl mx-auto mt-12 space-y-8">
+          <div className="relative max-w-md mx-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search cheatsheets..." 
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
 
-                <div className="flex items-center justify-between mt-auto">
-                  <Button
-                    onClick={() => handlePdfDownload(item.slug)}
-                    variant="ghost"
-                    size="sm"
-                    className="gap-1.5"
-                  >
-                    <Download className="w-3.5 h-3.5" /> PDF
-                  </Button>
-                  <Link
-                    to={`/learn/${item.slug}?tab=cheatsheets`}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-accent-purple hover:text-accent-violet transition-colors"
-                  >
-                    Open Sheet <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredItems.map((sheet) => (
+              <ContentCard 
+                key={sheet.id} 
+                content={sheet} 
+                type="cheatsheet" 
+              />
             ))}
           </div>
+          
+          {filteredItems.length === 0 && (
+            <div className="text-center py-20 text-gray-500">
+              <Search size={48} className="mx-auto mb-4 opacity-20" />
+              <p>No cheatsheets found matching your search.</p>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   )
 }
