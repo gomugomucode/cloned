@@ -4,9 +4,11 @@ import { interviewCategories } from '@/data/interviews'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { notFound } from 'next/navigation'
 import { useState } from 'react'
-import { CheckCircle2, Circle, Bookmark, Search, Filter } from 'lucide-react'
+import { CheckCircle2, Circle, Bookmark, Search, Filter, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { motion } from 'framer-motion'
+import { useBookmarks } from '@/context/BookmarkContext'
+import React from 'react'
 
 export default function InterviewCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = React.use(params)
@@ -17,10 +19,11 @@ export default function InterviewCategoryPage({ params }: { params: Promise<{ sl
   }
 
   const [searchQuery, setSearchQuery] = useState('')
-  const [bookmarked, setBookmarked] = useState<string[]>([])
+  const { bookmarkedIds, toggleBookmark } = useBookmarks()
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
-  const toggleBookmark = (id: string) => {
-    setBookmarked(prev => prev.includes(id) ? prev.filter(b => b !== id) : [...prev, id])
+  const toggleB = (id: string) => {
+    toggleBookmark(id, category.category || 'interview')
   }
 
   const filteredQuestions = category.questions.filter(q => 
@@ -80,8 +83,8 @@ export default function InterviewCategoryPage({ params }: { params: Promise<{ sl
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className={`h-9 w-9 p-0 ${bookmarked.includes(q.id) ? 'text-yellow-500' : ''}`}
-                  onClick={() => toggleBookmark(q.id)}
+                  className={`h-9 w-9 p-0 ${bookmarkedIds.has(q.id) ? 'text-yellow-500' : ''}`}
+                  onClick={() => toggleB(q.id)}
                 >
                   <Bookmark className="w-4 h-4" />
                 </Button>
@@ -103,6 +106,3 @@ export default function InterviewCategoryPage({ params }: { params: Promise<{ sl
     </div>
   )
 }
-
-import { ChevronRight } from 'lucide-react'
-import React from 'react'
