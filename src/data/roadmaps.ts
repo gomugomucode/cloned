@@ -6,6 +6,7 @@ export interface Roadmap {
   duration: string
   level: string
   color: string
+  icon: string
 }
 
 export const roadmaps: Roadmap[] = [
@@ -17,6 +18,7 @@ export const roadmaps: Roadmap[] = [
     duration: '6 months',
     level: 'Beginner',
     color: 'from-violet-500/20 to-purple-600/10',
+    icon: 'Palette',
   },
   {
     id: 'backend',
@@ -26,6 +28,7 @@ export const roadmaps: Roadmap[] = [
     duration: '5 months',
     level: 'Intermediate',
     color: 'from-cyan-500/20 to-blue-600/10',
+    icon: 'Terminal',
   },
   {
     id: 'fullstack',
@@ -35,6 +38,7 @@ export const roadmaps: Roadmap[] = [
     duration: '8 months',
     level: 'Intermediate',
     color: 'from-emerald-500/20 to-teal-600/10',
+    icon: 'Code2',
   },
   {
     id: 'devops',
@@ -44,5 +48,6 @@ export const roadmaps: Roadmap[] = [
     duration: '4 months',
     level: 'Advanced',
     color: 'from-amber-500/20 to-orange-600/10',
+    icon: 'GitBranch',
   },
 ]

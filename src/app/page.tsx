@@ -1,31 +1,33 @@
 'use client';
 
-import { Hero } from '@/components/home/Hero'
-import { StatsSection } from '@/components/home/StatsSection'
-import { FeaturedCategories } from '@/components/home/FeaturedCategories'
-import { WhatWeOffer } from '@/components/home/WhatWeOffer'
-import { PopularLanguages } from '@/components/home/PopularLanguages'
-import { QuizGamesTools } from '@/components/home/QuizGamesTools'
-import { RoadmapsSection } from '@/components/home/RoadmapsSection'
-import { LatestArticles } from '@/components/home/LatestArticles'
-import { VisualCollections } from '@/components/home/VisualCollections'
-import { WeeklyChallenge } from '@/components/home/WeeklyChallenge'
-import { FounderPreview } from '@/components/about/FounderSection'
+import { HeroSection } from '@/components/home/hero/hero-section'
+import { FeatureBento } from '@/components/home/features/bento-grid'
+import { roadmaps } from '@/data/roadmaps'
+
+const roadmapFeatures = roadmaps.map(r => ({
+  title: r.title,
+  description: r.description,
+  icon: r.icon,
+  size: (r.id === 'frontend' ? 'large' : 'small') as 'small' | 'large',
+  href: `/roadmaps/${r.id}`,
+  color: 'bg-violet-500'
+}))
 
 export default function HomePage() {
   return (
-    <>
-      <Hero />
-      <StatsSection />
-      <FeaturedCategories />
-      <WhatWeOffer />
-      <PopularLanguages />
-      <QuizGamesTools />
-      <RoadmapsSection />
-      <LatestArticles />
-      <VisualCollections />
-      <WeeklyChallenge />
-      <FounderPreview />
-    </>
+    <div className="bg-black min-h-screen">
+      <HeroSection />
+      
+      <div className="py-20 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          Engineered for Excellence
+        </h2>
+        <p className="text-zinc-500 max-w-xl mx-auto px-4 text-lg">
+          Carefully curated paths to mastery, stripped of fluff and focused on production reality.
+        </p>
+      </div>
+
+      <FeatureBento items={roadmapFeatures} />
+    </div>
   )
 }

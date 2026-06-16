@@ -1,74 +1,50 @@
-# CodeNova — Programming Education Platform
+# ⚒️ StackForge
 
-A modern, dark-themed programming education website inspired by developer learning platforms. Built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**.
+**The Ultimate Forge for Modern Developers.**
 
-## Features
+StackForge is a high-performance developer resource platform designed to transition coders into elite engineers. By providing architectural blueprints, distilled cheat sheets, and production-grade projects, we bridge the gap between tutorial hell and real-world engineering.
 
-- **Home page** — Hero, animated stats, featured categories, offerings, languages, quizzes/games/tools, roadmaps, articles, visual collections, weekly challenge, and founder preview
-- **About page** — Founder profile, mission statement, achievements, and contact buttons
-- **Blog page** — Article cards with category filters, search, and pagination
-- **Resources page** — PDFs, cheat sheets, downloads, and developer tools with search/filter UI
-- **Responsive design** — Optimized for desktop, tablet, and mobile
-- **Animations** — Scroll-triggered fade-ins and animated stat counters
-- **Accessibility** — Semantic HTML, keyboard-friendly controls, ARIA labels
+## 🚀 Tech Stack
 
-## Tech Stack
+- **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Language**: TypeScript
 
-- React 19 + TypeScript
-- Vite
-- Tailwind CSS v4
-- React Router
-- Lucide React (icons)
-- Framer Motion (available for future enhancements)
+## 🏗️ Architecture
 
-## Getting Started
+The project follows a **Modular-Feature Architecture**:
 
-### Prerequisites
+- **UI Layer**: Atomic components (`src/components/ui`) used across the application.
+- **Feature Layer**: High-level organisms (`src/components/home/`) grouped by page logic.
+- **Data Layer**: Single source of truth for content located in `src/data/`.
+- **Global Styles**: Design tokens defined in `src/app/globals.css` using CSS variables for theme consistency.
 
-- Node.js 18+ and npm
+## 🛠️ Development
 
-### Install & Run
+### Installation
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+### Run Dev Server
+
+```bash
+npm run dev
+```
 
 ### Build for Production
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## Project Structure
+## 📐 Design Principles
 
-```
-src/
-├── components/
-│   ├── about/          # Founder & about sections
-│   ├── blog/           # Blog listing & filters
-│   ├── home/           # Home page sections
-│   ├── layout/         # Navbar, Footer, Layout
-│   ├── resources/      # Resources page content
-│   └── ui/             # Reusable UI (Button, Card, SearchInput)
-├── data/               # Content arrays (easy to edit)
-├── hooks/              # useScrollAnimation, useCounter
-├── pages/              # Route pages
-└── utils/              # Icon mapping helper
-```
-
-## Customization
-
-All content lives in `src/data/` — edit arrays for stats, articles, resources, languages, roadmaps, and more without touching component logic.
-
-Brand name and navigation links are in `src/data/navigation.ts`.
-
-## License
-
-Original code and placeholder content. Not affiliated with any third-party brand.
+- **Dark Mode Luxury**: Utilizing a depth-based color palette (Pure Black $\rightarrow$ Charcoal $\rightarrow$ Zinc).
+- **Bento Layouts**: Implementing high-density information grids for maximum scannability.
+- **Micro-Interactions**: Using Framer Motion for staggered entries and spotlight hover effects.
+- **Precision Typography**: Leveraging Geist Sans for clarity and JetBrains Mono for technical accuracy.
