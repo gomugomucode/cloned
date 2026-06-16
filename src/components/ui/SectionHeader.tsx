@@ -5,6 +5,7 @@ interface SectionHeaderProps {
   title: string
   highlight?: string
   description?: string
+  subtitle?: string
   align?: 'left' | 'center'
   className?: string
 }
@@ -14,10 +15,12 @@ export function SectionHeader({
   title,
   highlight,
   description,
+  subtitle,
   align = 'center',
   className = '',
 }: SectionHeaderProps) {
   const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left'
+  const finalDescription = description || subtitle
 
   return (
     <div className={`max-w-3xl mb-12 md:mb-16 ${alignClass} ${className}`}>
@@ -35,8 +38,8 @@ export function SectionHeader({
           </>
         )}
       </h2>
-      {description && (
-        <p className="text-text-secondary text-base md:text-lg leading-relaxed">{description}</p>
+      {finalDescription && (
+        <p className="text-text-secondary text-base md:text-lg leading-relaxed">{finalDescription}</p>
       )}
     </div>
   )

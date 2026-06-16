@@ -47,7 +47,7 @@ export function LearningPathsSection() {
                       sIdx === 0 ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-muted text-muted-foreground group-hover:border-primary/50'
                     }`}>
                       {sIdx === 0 ? <CheckCircle2 className="w-3 h-3" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
-                    </div}
+                    </div>
                     <span className={`text-sm transition-colors ${sIdx === 0 ? 'font-medium' : 'text-muted-foreground group-hover:text-foreground'}`}>
                       {step}
                     </span>
