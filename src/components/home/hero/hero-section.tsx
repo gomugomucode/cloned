@@ -1,8 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/Button"
-import { ArrowRight, Code2, Sparkles, Terminal } from "lucide-react"
+import { ArrowRight, Sparkles, Terminal } from "lucide-react"
 import { motion } from "framer-motion"
+import { HeroVisual } from './HeroVisual'
+import Link from 'next/link'
 
 export function HeroSection() {
   return (
@@ -50,11 +52,15 @@ export function HeroSection() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button size="lg" className="h-12 px-8 gap-2 group">
-            Get Started <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <Button size="lg" className="h-12 px-8 gap-2 group" asChild>
+            <Link href="/roadmaps">
+              Get Started <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </Button>
-          <Button variant="outline" size="lg" className="h-12 px-8 gap-2">
-            <Terminal className="w-4 h-4" /> View Roadmaps
+          <Button variant="outline" size="lg" className="h-12 px-8 gap-2" asChild>
+            <Link href="/roadmaps">
+              <Terminal className="w-4 h-4" /> View Roadmaps
+            </Link>
           </Button>
         </motion.div>
 
@@ -66,7 +72,7 @@ export function HeroSection() {
         >
           <div className="relative rounded-2xl border border-border bg-card/50 p-2 backdrop-blur-sm shadow-2xl">
             <div className="aspect-video rounded-xl overflow-hidden bg-muted flex items-center justify-center">
-              <Code2 className="w-20 h-20 text-primary/30" />
+              <HeroVisual />
             </div>
             {/* Floating Elements */}
             <div className="absolute -top-6 -left-6 p-4 rounded-xl bg-background border border-border shadow-lg animate-bounce-slow hidden lg:block">
