@@ -75,6 +75,3 @@ export function InterviewSection() {
     </section>
   )
 }
-
-// Need to add ArrowRight import for the button
-import { ArrowRight } from "lucide-react"
