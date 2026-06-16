@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { XP_REWARDS } from "@/lib/gamification"
 
 export async function GET() {
   const session = await auth()
@@ -28,7 +29,7 @@ export async function POST(req: Request) {
         nodeId
       }
     },
-    update: { completed: true }, // Simplified: always mark as completed on post
+    update: { completed: true },
     create: {
       userId: session.user.id,
       nodeId,
@@ -36,5 +37,21 @@ export async function POST(req: Request) {
     }
   })
 
-  return NextResponse.json(progress)
+  // Grant XP for completion
+  const updatedUser = await prisma.user.update({
+    where: { id: session.user.id },
+    data: {
+      xp: {
+        increment: XP_REWARDS.NODE_COMPLETION
+      }
+    }
+  })
+
+  return NextResponse.json({
+    progress,
+    user: {
+      xp: updatedUser.xp,
+      level: updatedUser.level // Note: Level is updated manually or via a trigger in DB
+    }
+  })
 }
