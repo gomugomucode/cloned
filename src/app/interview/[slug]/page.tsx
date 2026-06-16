@@ -88,11 +88,40 @@ export default function InterviewCategoryPage({ params }: { params: Promise<{ sl
                 >
                   <Bookmark className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" size="sm" className="gap-2">
-                  View Answer <ChevronRight className="w-4 h-4" />
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="gap-2"
+                  onClick={() => setExpandedId(expandedId === q.id ? null : q.id)}
+                >
+                  {expandedId === q.id ? 'Hide Answer' : 'View Answer'} <ChevronRight className={`w-4 h-4 transition-transform ${expandedId === q.id ? 'rotate-90' : ''}`} />
                 </Button>
-              </div>
+              </div
             </div>
+            <AnimatePresence>
+              {expandedId === q.id && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 py-6 bg-secondary/50 border-t border-border">
+                    <div className="flex items-start gap-3">
+                      <div className="p-1 rounded bg-primary/20 text-primary">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-bold mb-2">Expert Answer</h4>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {q.answer}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <div className="px-6 py-3 bg-secondary/30 border-t border-border flex flex-wrap gap-2">
               {q.tags.map(tag => (
                 <span key={tag} className="text-[10px] font-medium text-muted-foreground hover:text-foreground cursor-pointer">
