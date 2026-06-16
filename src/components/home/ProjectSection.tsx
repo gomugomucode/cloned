@@ -1,6 +1,7 @@
 "use client"
 
-import { Github, ExternalLink, FolderCode } from "lucide-react"
+import { GitBranch, ExternalLink, FolderCode } from "lucide-react"
+
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { Button } from "@/components/ui/Button"
 
@@ -65,7 +66,7 @@ export function ProjectSection() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Button variant="outline" size="sm" className="flex-1 gap-2">
-                    <Github className="w-4 h-4" /> Code
+                    <GitBranch className="w-4 h-4" /> Code
                   </Button>
                   <Button variant="primary" size="sm" className="flex-1 gap-2">
                     <ExternalLink className="w-4 h-4" /> Demo
