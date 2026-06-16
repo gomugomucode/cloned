@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { ProgressProvider } from '@/context/ProgressContext'
 import { BookmarkProvider } from '@/context/BookmarkContext'
+import { UserStatsProvider } from '@/context/UserStatsContext'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata = {
@@ -22,14 +23,16 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light">
           <ProgressProvider>
             <BookmarkProvider>
-              <ScrollToTop />
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <main className="flex-1">
-                  {children}
-                </main>
-                <Footer />
-              </div>
+              <UserStatsProvider>
+                <ScrollToTop />
+                <div className="min-h-screen flex flex-col">
+                  <Navbar />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
+              </UserStatsProvider>
             </BookmarkProvider>
           </ProgressProvider>
         </ThemeProvider>
