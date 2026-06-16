@@ -1,3 +1,4 @@
+"use client"
 import { cheatsheets } from '@/data/cheatsheets'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import Link from 'next/link'

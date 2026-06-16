@@ -1,3 +1,4 @@
+"use client"
 import { projects } from '@/data/projects'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import Link from 'next/link'

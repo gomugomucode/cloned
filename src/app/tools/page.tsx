@@ -1,3 +1,4 @@
+"use client"
 import { devTools } from '@/data/tools'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import Link from 'next/link'
