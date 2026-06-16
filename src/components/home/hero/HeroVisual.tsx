@@ -15,7 +15,7 @@ export function HeroVisual() {
     <div className="relative w-full h-full flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-3xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         {/* Window Header */}
-        <div className="px-4 py-3 border-b border-border bg-secondary/20 flex items-center justify-between">
+        <div className="px-4 py-3 border-b border-border bg-muted/50 flex items-center justify-between">
           <div className="flex gap-1.5">
             <div className="w-3 h-3 rounded-full bg-destructive/50" />
             <div className="w-3 h-3 rounded-full bg-yellow-500/50" />

@@ -25,11 +25,11 @@ export function SectionHeader({
   return (
     <div className={`max-w-3xl mb-12 md:mb-16 ${alignClass} ${className}`}>
       {badge && (
-        <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent-purple/10 text-accent-purple border border-accent-purple/20">
+        <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">
           {badge}
         </span>
       )}
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-4">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-4">
         {title}
         {highlight && (
           <>
@@ -39,7 +39,7 @@ export function SectionHeader({
         )}
       </h2>
       {finalDescription && (
-        <p className="text-text-secondary text-base md:text-lg leading-relaxed">{finalDescription}</p>
+        <p className="text-muted-foreground text-base md:text-lg leading-relaxed">{finalDescription}</p>
       )}
     </div>
   )
@@ -58,8 +58,8 @@ export function Card({ children, className = '', hover = true, glow = 'none' }: 
 
   return (
     <div
-      className={`gradient-border rounded-2xl p-6 md:p-8 bg-surface-800/80 backdrop-blur-sm ${
-        hover ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent-purple/5' : ''
+      className={`gradient-border rounded-2xl p-6 md:p-8 bg-card border-border backdrop-blur-sm ${
+        hover ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5' : ''
       } ${glowClass} ${className}`}
     >
       {children}
