@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react-hooks/static-components */
 import { ArrowRight } from 'lucide-react'
 import type { QuizGameTool } from '../../data/quizGamesTools'
 import { quizGamesTools } from '../../data/quizGamesTools'
@@ -13,13 +14,16 @@ const typeColors = {
   tool: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
 }
 
+function DynamicIcon({ name, className }: { name: string; className?: string }) {
+  const Icon = getIcon(name)
+  return <Icon className={className} />
+}
+
 interface ActivityCardProps {
   item: QuizGameTool
 }
 
 export function ActivityCard({ item }: ActivityCardProps) {
-  const Icon = getIcon(item.icon)
-
   return (
     <a
       href={item.href}
@@ -27,7 +31,7 @@ export function ActivityCard({ item }: ActivityCardProps) {
     >
       <div className="flex items-start justify-between mb-4">
         <div className="w-11 h-11 rounded-xl bg-surface-700 flex items-center justify-center group-hover:bg-accent-purple/10 transition-colors">
-          <Icon className="w-5 h-5 text-accent-purple" />
+          <DynamicIcon name={item.icon} className="w-5 h-5 text-accent-purple" />
         </div>
         <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${typeColors[item.type]}`}>
           {item.type}

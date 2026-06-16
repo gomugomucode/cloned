@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react-hooks/static-components */
 import { useState, useMemo } from 'react'
 import { Download, ExternalLink } from 'lucide-react'
 import type { Resource } from '../../data/resources'
@@ -23,15 +24,19 @@ const typeColors: Record<string, string> = {
   download: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
 }
 
+function DynamicIcon({ name, className }: { name: string; className?: string }) {
+  const Icon = getIcon(name)
+  return <Icon className={className} />
+}
+
 function ResourceCard({ resource }: { resource: Resource }) {
-  const Icon = getIcon(resource.icon)
   const isTool = resource.type === 'tool'
 
   return (
     <Card className="flex flex-col h-full">
       <div className="flex items-start justify-between mb-4">
         <div className="w-11 h-11 rounded-xl bg-surface-700 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-accent-purple" />
+          <DynamicIcon name={resource.icon} className="w-5 h-5 text-accent-purple" />
         </div>
         <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${typeColors[resource.type]}`}>
           {typeLabels[resource.type]}
