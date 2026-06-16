@@ -7,93 +7,114 @@ import { Menu, X, Code2 } from 'lucide-react'
 import { navLinks, brandName } from '../../data/navigation'
 import { Button } from '../ui/Button'
 import { ThemeToggle } from '../ui/theme-toggle'
+import { CommandMenu } from './CommandMenu'
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-2.5 group" aria-label={`${brandName} home`}>
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-purple-400 flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Code2 className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-foreground">
-              {brandName}
-            </span>
-          </Link>
+    <>
+      <CommandMenu />
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+        <nav className="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            <Link href="/" className="flex items-center gap-2.5 group" aria-label={`${brandName} home`}>
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-purple-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Code2 className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-foreground">
+                {brandName}
+              </span>
+            </Link>
 
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === link.href
-                      ? 'text-primary bg-primary/10'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
-                  }`
-                }
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
-            <Button to="/blog" variant="ghost" size="sm">
-              Articles
-            </Button>
-            <Button to="/#weekly-challenge" variant="primary" size="sm">
-              Start Learning
-            </Button>
-          </div>
-
-          <button
-            type="button"
-            className="md:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {mobileOpen && (
-          <div className="md:hidden pb-4 border-t border-border pt-4">
-            <div className="flex flex-col gap-1">
+            <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     pathname === link.href
                         ? 'text-primary bg-primary/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                     }`
-                  }
+                }
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-3 px-4 flex flex-col gap-2">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">Theme</span>
-                  <ThemeToggle />
+            </div>
+
+            <div className="hidden md:flex items-center gap-3">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="gap-2 text-muted-foreground hover:text-foreground"
+                onClick={() => {
+                  const event = new KeyboardEvent('keydown', { 
+                    key: 'k', 
+                    ctrlKey: true, 
+                    metaKey: true, 
+                    bubbles: true 
+                  });
+                  document.dispatchEvent(event);
+                }}
+              >
+                <span className="text-xs font-medium">Search</span>
+                <kbd className="px-1.5 py-0.5 rounded bg-secondary text-[10px] border border-border">⌘K</kbd>
+              </Button>
+              <ThemeToggle />
+              <Button to="/blog" variant="ghost" size="sm">
+                Articles
+              </Button>
+              <Button to="/#weekly-challenge" variant="primary" size="sm">
+                Start Learning
+              </Button>
+            </div>
+
+            <button
+              type="button"
+              className="md:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-expanded={mobileOpen}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+          {mobileOpen && (
+            <div className="md:hidden pb-4 border-t border-border pt-4">
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                      pathname === link.href
+                          ? 'text-primary bg-primary/10'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                      }`
+                  }
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <div className="pt-3 px-4 flex flex-col gap-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">Theme</span>
+                    <ThemeToggle />
+                  </div>
+                  <Button to="/#weekly-challenge" variant="primary" size="md" className="w-full">
+                    Start Learning
+                  </Button>
                 </div>
-                <Button to="/#weekly-challenge" variant="primary" size="md" className="w-full">
-                  Start Learning
-                </Button>
               </div>
             </div>
-          </div>
-        )}
-      </nav>
-    </header>
+          )}
+        </nav>
+      </header>
+    </>
   )
 }

@@ -49,7 +49,7 @@ export const projects: Project[] = [
     tasks: [
       { id: 't1', title: 'GitHub App Setup', description: 'Create a GitHub App and configure webhooks.', isCompleted: false },
       { id: 't2', title: 'PR Fetcher', description: 'Implement logic to fetch PR diffs from GitHub API.', isCompleted: false },
-      { id: la: 't3', title: 'AI Prompt Engineering', description: 'Design prompts for high-quality code reviews.', isCompleted: false },
+      { id: 't3', title: 'AI Prompt Engineering', description: 'Design prompts for high-quality code reviews.', isCompleted: false },
       { id: 't4', title: 'Review Poster', description: 'Post suggestions as line-comments on the PR.', isCompleted: false },
     ],
     solution: 'https://github.com/example/ai-reviewer-solution',
