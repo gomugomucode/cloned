@@ -2,10 +2,12 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
+import { ProgressProvider } from '@/context/ProgressContext'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata = {
-  title: 'CodeNova',
-  description: 'Your destination for coding resources, roadmaps and quizzes',
+  title: 'StackForge | Master the Modern Tech Stack',
+  description: 'Production-ready roadmaps, cheat sheets, and projects for elite developers.',
 }
 
 export default function RootLayout({
@@ -14,16 +16,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <ScrollToTop />
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <ProgressProvider>
+            <ScrollToTop />
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </ProgressProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

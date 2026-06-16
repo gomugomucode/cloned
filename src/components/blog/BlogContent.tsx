@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import { articles, articleCategories } from '../../data/articles'
 import { SectionHeader } from '../ui/SectionHeader'
 import { SearchInput } from '../ui/SearchInput'
-import { ArticleCard } from '../home/LatestArticles'
+import { ArticleCard } from '@/components/home/LatestArticles'
 import { Button } from '../ui/Button'
 
 const ARTICLES_PER_PAGE = 6

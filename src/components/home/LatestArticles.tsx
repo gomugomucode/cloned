@@ -1,98 +1,44 @@
 'use client';
+import { motion } from 'framer-motion';
+import { Card } from '@/components/ui/SectionHeader';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
 
-import { Calendar, Clock, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
-import type { Article } from '../../data/articles'
-import { articles } from '../../data/articles'
-import { SectionHeader } from '../ui/SectionHeader'
-import { useScrollAnimation } from '../../hooks/useScrollAnimation'
-
-interface ArticleCardProps {
-  article: Article
-  featured?: boolean
-}
-
-export function ArticleCard({ article, featured = false }: ArticleCardProps) {
+export function ArticleCard({ article, featured = false }: { article: { id: string, title: string, excerpt: string, category: string, date: string, author: string }; featured?: boolean }) {
   return (
-    <article
-      className={`group rounded-2xl overflow-hidden bg-surface-800/80 border border-surface-600/50 hover:border-accent-purple/40 transition-all duration-300 hover:-translate-y-1 ${
-        featured ? 'md:col-span-2 md:grid md:grid-cols-2' : ''
-      }`}
+    <motion.div
+      whileHover={{ y: -5 }}
+      className={`relative group overflow-hidden rounded-3xl border transition-all duration-300 
+        ${featured ? 'md:col-span-2 border-violet-500/30' : 'border-white/5 hover:border-white/20'}`}
     >
-      <div className={`overflow-hidden ${featured ? 'h-full min-h-[200px]' : 'aspect-video'}`}>
-        <img
-          src={article.image}
-          alt=""
-          loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-      </div>
-      <div className="p-5 md:p-6 flex flex-col">
-        <span className="inline-block w-fit text-xs font-semibold px-2.5 py-1 rounded-full bg-accent-purple/10 text-accent-purple border border-accent-purple/20 mb-3">
-          {article.category}
-        </span>
-        <h3 className="font-bold text-text-primary mb-2 group-hover:text-accent-purple transition-colors line-clamp-2">
-          {article.title}
-        </h3>
-        <p className="text-text-secondary text-sm leading-relaxed mb-4 line-clamp-2 flex-1">
-          {article.excerpt}
-        </p>
-        <div className="flex items-center justify-between text-xs text-text-muted">
-          <div className="flex items-center gap-3">
-            <span>{article.author}</span>
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5" />
-              {new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+      <Card className="h-full p-6 bg-zinc-900/40 border-none">
+        <div className="flex flex-col h-full">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-violet-400 px-2 py-1 rounded-md bg-violet-500/10 border border-violet-500/20">
+              {article.category}
             </span>
-            <span className="inline-flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" />
-              {article.readTime}
-            </span>
+            <span className="text-xs text-zinc-500">{article.date}</span>
           </div>
-          <span className="inline-flex items-center gap-1 text-accent-purple font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-            Read
-            <ArrowRight className="w-3.5 h-3.5" />
-          </span>
+          <h3 className="text-xl font-bold text-white mb-3 group-hover:text-violet-400 transition-colors">
+            {article.title}
+          </h3>
+          <p className="text-zinc-400 text-sm leading-relaxed mb-6 line-clamp-3">
+            {article.excerpt}
+          </p>
+          <div className="mt-auto flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-zinc-700" />
+              <span className="text-xs text-zinc-300">{article.author}</span>
+            </div>
+            <Link href={`/blog/${article.id}`}>
+              <Button variant="ghost" size="sm" className="text-white p-0 hover:bg-transparent group/btn">
+                Read More <ArrowRight className="ml-1 w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
-    </article>
-  )
-}
-
-export function LatestArticles() {
-  const { ref, isVisible } = useScrollAnimation()
-  const latest = articles.slice(0, 4)
-
-  return (
-    <section ref={ref} className="py-20 md:py-28 bg-surface-850/30">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          badge="From the Blog"
-          title="Latest Articles"
-          highlight="& Tutorials"
-          description="Deep dives, tutorials, and insights from the CodeNova team — level up your knowledge."
-        />
-
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {latest.map((article, i) => (
-            <ArticleCard key={article.id} article={article} featured={i === 0} />
-          ))}
-        </div>
-
-        <div className="text-center mt-10">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-accent-purple font-semibold hover:text-accent-violet transition-colors"
-          >
-            View All Articles
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  )
+      </Card>
+    </motion.div>
+  );
 }
