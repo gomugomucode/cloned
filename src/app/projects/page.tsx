@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ChevronRight, Layout, Gauge, Github, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
+import { AnimatePresence } from 'framer-motion'
 import { ProjectSubmitModal } from '@/components/projects/ProjectSubmitModal'
 
 export default function ProjectsPage() {
@@ -79,7 +80,7 @@ export default function ProjectsPage() {
             </div>
             <div className="flex items-center text-sm font-bold text-primary gap-1 group-hover:gap-2 transition-all">
               Start Building <ChevronRight className="w-4 h-4" />
-            </div_>
+            </div>
             <div className="mt-6 pt-6 border-t border-border flex gap-2">
               <Button 
                 variant="outline" 

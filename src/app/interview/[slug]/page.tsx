@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import { useState } from 'react'
 import { CheckCircle2, Circle, Bookmark, Search, Filter, ChevronRight, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useBookmarks } from '@/context/BookmarkContext'
 import React from 'react'
 import Link from 'next/link'
@@ -105,7 +105,7 @@ export default function InterviewCategoryPage({ params }: { params: Promise<{ sl
                 >
                   {expandedId === q.id ? 'Hide Answer' : 'View Answer'} <ChevronRight className={`w-4 h-4 transition-transform ${expandedId === q.id ? 'rotate-90' : ''}`} />
                 </Button>
-              </div
+              </div>
             </div>
             <AnimatePresence>
               {expandedId === q.id && (
