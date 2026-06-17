@@ -9,7 +9,7 @@ import { Button } from '../ui/Button'
 import { ThemeToggle } from '../ui/theme-toggle'
 import { CommandMenu } from './CommandMenu'
 import { useUserStats } from '@/context/UserStatsContext'
-import { Trophy, User } from 'lucide-react'
+import { Trophy, User, Users } from 'lucide-react'
 
 function UserStatsBadge() {
   const { xp, level, streak, isLoading } = useUserStats();
@@ -77,6 +77,14 @@ export function Navbar() {
               {/* User Stats Badge */}
               <UserStatsBadge />
               
+              <Link 
+                href="/community" 
+                className="px-3 py-1.5 rounded-full bg-secondary/50 border border-border hover:bg-secondary transition-all flex items-center gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span className="text-xs font-medium">Circles</span>
+              </Link>
+
               <Button 
                 variant="ghost" 
                 size="sm" 

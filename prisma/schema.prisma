@@ -20,6 +20,7 @@ model User {
   certifications Certification[]
   submissions     ProjectSubmission[]
   reviews        Review[]
+  memberships    CircleMembership[]
   xp            Int       @default(0)
   level         Int       @default(1)
   streak        Int       @default(0)
@@ -84,6 +85,27 @@ model Certification {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roadmapId])
+}
+
+model Circle {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  roadmapId   String?  // Optional: Circle tied to a specific roadmap
+  createdAt   DateTime @default(now())
+  members     CircleMembership[]
+}
+
+model CircleMembership {
+  id        String   @id @default(cuid())
+  userId    String
+  circleId  String
+  role      String   @default("MEMBER") // ADMIN, MEMBER
+  joinedAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  circle    Circle   @relation(fields: [circleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, circleId])
 }
 
 model ProjectSubmission {
