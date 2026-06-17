@@ -4,11 +4,12 @@ import { interviewCategories } from '@/data/interviews'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { notFound } from 'next/navigation'
 import { useState } from 'react'
-import { CheckCircle2, Circle, Bookmark, Search, Filter, ChevronRight } from 'lucide-react'
+import { CheckCircle2, Circle, Bookmark, Search, Filter, ChevronRight, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { motion } from 'framer-motion'
 import { useBookmarks } from '@/context/BookmarkContext'
 import React from 'react'
+import Link from 'next/link'
 
 export default function InterviewCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = React.use(params)
@@ -49,9 +50,17 @@ export default function InterviewCategoryPage({ params }: { params: Promise<{ sl
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div >
-        <Button variant="outline" className="gap-2">
-          <Filter className="w-4 h-4" /> Filter Difficulty
-        </Button>
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/interview/mock" 
+            className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2"
+          >
+            <Trophy className="w-4 h-4" /> AI Mock Interview
+          </Link>
+          <Button variant="outline" className="gap-2">
+            <Filter className="w-4 h-4" /> Filter Difficulty
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-4">

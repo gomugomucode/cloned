@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { CheckCircle2, Circle, Lock, BookOpen, ArrowRight, ArrowLeft, Sparkles, Send, X } from 'lucide-react'
+import { CheckCircle2, Circle, Lock, BookOpen, ArrowRight, ArrowLeft, Sparkles, Send, X, Trophy } from 'lucide-react'
 import { Roadmap, RoadmapNode } from '@/data/roadmaps'
 import { useProgress } from '@/context/ProgressContext'
 import { Button } from '@/components/ui/Button'
@@ -98,8 +98,7 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="space-y-6"
-            >
+              className="space-y-6">
               <div className="flex items-center gap-3 mb-2">
                 <div className="p-2 rounded-lg bg-primary/10 text-primary">
                   <BookOpen className="w-5 h-5" />
@@ -143,7 +142,6 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
                     )}
                   </Button>
                 )}
-              </div>
             </motion.div>
           ) : (
             <div className="text-center py-12">
