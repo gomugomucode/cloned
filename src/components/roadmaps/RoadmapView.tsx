@@ -7,6 +7,7 @@ import { useProgress } from '@/context/ProgressContext'
 import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
 import { QuizView } from './QuizView'
+import { FinalExamView } from './FinalExamView'
 
 interface RoadmapViewProps {
   roadmap: Roadmap
@@ -16,6 +17,7 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
   const { completedNodes, toggleNode } = useProgress()
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null)
   const [activeQuizNode, setActiveQuizNode] = useState<RoadmapNode | null>(null)
+  const [activeExam, setActiveExam] = useState(false)
   const [isAiOpen, setIsAiOpen] = useState(false)
   const [aiMessages, setAiMessages] = useState<{role: string, content: string}[]>([])
   const [inputMessage, setInputMessage] = useState('')
@@ -113,45 +115,34 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
                 {nodes.find(n => n.id === activeNodeId)?.content}
               </div>
 
-              <div className="flex items-center justify-between pt-6 border-t border-border">
-                <div className="flex gap-2">
+                {completedNodes.size >= nodes.length ? (
                   <Button 
-                    variant="outline" 
-                    disabled={activeNodeId ? !completedNodes.has(activeNodeId) : true}
+                    variant="primary" 
+                    onClick={() => setActiveExam(true)}
+                    className="gap-2"
+                  >
+                    Claim Certification <Trophy className="w-4 h-4" />
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="primary" 
                     onClick={() => {
-                      // Logic to go to previous node
+                      const node = nodes.find(n => n.id === activeNodeId);
+                      if (node && node.quiz && !completedNodes.has(node.id)) {
+                        setActiveQuizNode(node);
+                      } else {
+                        toggleNode(activeNodeId);
+                      }
                     }}
+                    className="gap-2"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Previous
+                    {completedNodes.has(activeNodeId) ? (
+                      <>Undo <CheckCircle2 className="w-4 h-4" /></>
+                    ) : (
+                      <>Mark Completed <ArrowRight className="w-4 h-4" /></>
+                    )}
                   </Button>
-                  
-                  <Button 
-                    variant="outline" 
-                    className="gap-2 text-primary hover:text-primary-foreground hover:bg-primary" 
-                    onClick={() => setIsAiOpen(true)}
-                  >
-                    <Sparkles className="w-4 h-4" /> Ask AI
-                  </Button>
-                </div>
-                
-                <Button 
-                  variant="primary" 
-                  onClick={() => {
-                    const node = nodes.find(n => n.id === activeNodeId);
-                    if (node && node.quiz && !completedNodes.has(node.id)) {
-                      setActiveQuizNode(node);
-                    } else {
-                      toggleNode(activeNodeId);
-                    }
-                  }}
-                  className="gap-2"
-                >
-                  {completedNodes.has(activeNodeId) ? (
-                    <>Undo <CheckCircle2 className="w-4 h-4" /></>
-                  ) : (
-                    <>Mark Completed <ArrowRight className="w-4 h-4" /></>
-                  )}
-                </Button>
+                )}
               </div>
             </motion.div>
           ) : (
@@ -173,6 +164,27 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
             setActiveQuizNode(null);
           }}
           onClose={() => setActiveQuizNode(null)}
+        />
+      )}
+    </AnimatePresence>
+    
+    <AnimatePresence>
+      {activeExam && roadmap.finalExam && (
+        <FinalExamView 
+          exam={roadmap.finalExam}
+          onSuccess={async (score) => {
+            try {
+              await fetch('/api/certifications', {
+                method: 'POST',
+                body: JSON.stringify({ roadmapId: roadmap.id, score })
+              });
+              alert("Congratulations! Your certification has been issued.");
+            } catch (e) {
+              alert("Error issuing certification. Please try again.");
+            }
+            setActiveExam(false);
+          }}
+          onClose={() => setActiveExam(false)}
         />
       )}
     </AnimatePresence>

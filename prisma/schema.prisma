@@ -17,6 +17,9 @@ model User {
   sessions      Session[]
   progress      UserProgress[]
   bookmarks     Bookmark[]
+  certifications Certification[]
+  submissions     ProjectSubmission[]
+  reviews        Review[]
   xp            Int       @default(0)
   level         Int       @default(1)
   streak        Int       @default(0)
@@ -70,4 +73,38 @@ model Bookmark {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, resourceId])
+}
+
+model Certification {
+  id        String   @id @default(cuid())
+  userId    String
+  roadmapId String
+  issuedAt  DateTime @default(now())
+  score     Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId])
+}
+
+model ProjectSubmission {
+  id          String    @id @default(cuid())
+  userId      String
+  projectId   String    // Reference to project id in data/projects.ts
+  repoUrl     String
+  demoUrl     String?
+  description String?
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviews     Review[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String   // Reviewer
+  submissionId String
+  rating    Int      // 1-5
+  comment   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 }

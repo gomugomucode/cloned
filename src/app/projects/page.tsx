@@ -2,12 +2,15 @@
 import { projects } from '@/data/projects'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import Link from 'next/link'
-import { ChevronRight, Layout, Gauge } from 'lucide-react'
+import { ChevronRight, Layout, Gauge, Github, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
+import { ProjectSubmitModal } from '@/components/projects/ProjectSubmitModal'
 
 export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [submitModalOpen, setSubmitModalOpen] = useState(false)
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
 
   const filteredProjects = projects.filter(p => 
     p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -76,10 +79,42 @@ export default function ProjectsPage() {
             </div>
             <div className="flex items-center text-sm font-bold text-primary gap-1 group-hover:gap-2 transition-all">
               Start Building <ChevronRight className="w-4 h-4" />
+            </div_>
+            <div className="mt-6 pt-6 border-t border-border flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex-1 gap-2" 
+                onClick={() => {
+                  setSelectedProjectId(project.id);
+                  setSubmitModalOpen(true);
+                }}
+              >
+                <Github className="w-4 h-4" /> Submit Work
+              </Button>
+              <Link 
+                href={`/projects/${project.slug}`} 
+                className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-white transition-colors"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </Link>
             </div>
           </Link>
         ))}
       </div>
+      
+      <AnimatePresence>
+        {submitModalOpen && (
+          <ProjectSubmitModal 
+            projectId={selectedProjectId || ''} 
+            onClose={() => setSubmitModalOpen(false)} 
+            onSuccess={() => {
+              setSubmitModalOpen(false);
+              alert("Project submitted! You've earned 50 XP. Peer reviews will appear in your profile.");
+            }} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

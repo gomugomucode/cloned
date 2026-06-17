@@ -12,6 +12,15 @@ export interface RoadmapNode {
   };
 }
 
+export interface FinalExam {
+  questions: {
+    question: string;
+    options: string[];
+    correctOption: number;
+  }[];
+  passingScore: number;
+}
+
 export interface Roadmap {
   id: string;
   title: string;
@@ -20,6 +29,7 @@ export interface Roadmap {
   color: string;
   icon: string;
   nodes: RoadmapNode[];
+  finalExam?: FinalExam;
 }
 
 export const roadmaps: Roadmap[] = [
@@ -37,6 +47,16 @@ export const roadmaps: Roadmap[] = [
       { id: 'nextjs-app', title: 'Next.js App Router', description: 'Modern fullstack React.', content: 'Server Components, Streaming, Routing, and SEO optimization.', order: 4, quiz: { question: 'What is the primary benefit of Server Components?', options: ['Faster client-side interaction', 'Reduced JavaScript bundle size', 'Direct access to the DOM', 'Better CSS scoping'], correctOption: 1 } },
       { id: 'perf-optimization', title: 'Web Performance', description: 'Building for speed.', content: 'Lighthouse, Core Web Vitals, Lazy Loading, and Memoization.', order: 5, quiz: { question: 'Which metric measures the time to the first paint of any pixel?', options: ['LCP', 'CLS', 'FCP', 'FID'], correctOption: 2 } },
     ],
+    finalExam: {
+      passingScore: 80,
+      questions: [
+        { question: 'What is the "Critical Rendering Path" in browser performance?', options: ['DOM -> CSSOM -> Render Tree -> Layout -> Paint', 'HTML -> JS -> CSS -> Paint', 'DOM -> JS -> Paint', 'CSSOM -> DOM -> Layout' ], correctOption: 0 },
+        { question: 'How does the React Virtual DOM optimize updates?', options: ['By replacing the entire DOM on every change', 'By using a diffing algorithm to update only changed parts', 'By bypassing the DOM and rendering directly to the GPU', 'By disabling CSS transitions' ], correctOption: 1 },
+        { question: 'Which Next.js feature is used to pre-render pages on the server?', options: ['Client Components', 'Dynamic Routing', 'Server Components', 'API Routes' ], correctOption: 2 },
+        { question: 'What is the purpose of a "Closure" in JavaScript?', options: ['To close the browser tab', 'To encapsulate private variables and maintain state', 'To optimize loop performance', 'To prevent memory leaks' ], correctOption: 1 },
+        { question: 'Which CSS unit is relative to the viewport width?', options: ['px', 'rem', 'vw', 'em' ], correctOption: 2 },
+      ]
+    }
   },
   {
     id: 'backend',
