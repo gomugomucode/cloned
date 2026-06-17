@@ -1,15 +1,33 @@
-import { auth } from "@/auth"
-import { NextResponse } from "next/server"
-import { interviewCategories } from "@/data/interviews"
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { hasAccess } from "@/lib/access-control";
 
 export async function POST(req: Request) {
-  const session = await auth()
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const session = await auth();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const { categorySlug, userResponse, questionId } = await req.json()
+    const { categorySlug, userResponse, questionId } = await req.json();
 
-    const category = interviewCategories.find(c => c.slug === categorySlug)
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    });
+
+    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+    // Limit check for Mock Interviews
+    const mockInterviewsThisWeek = 0; // Mock count
+    if (!hasAccess(user.plan as any, 'mockInterviewsPerWeek', mockInterviewsThisWeek)) {
+      return NextResponse.json({ 
+        error: "Weekly Mock Interview limit reached", 
+        upgradeUrl: "/pricing",
+        plan: user.plan 
+      }, { status: 403 });
+    }
+
+    const category = (await import('@/data/interviews')).interviewCategories.find(c => c.slug === categorySlug);
+    if (!category) return NextResponse.json({ error: "Category not found" }, { status: 404 });
     if (!category) return NextResponse.json({ error: "Category not found" }, { status: 404 })
 
     const question = category.questions.find(q => q.id === questionId)

@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { hasAccess } from "@/lib/access-control"
 
 export async function GET() {
   const session = await auth()
@@ -20,6 +21,23 @@ export async function POST(req: Request) {
 
   try {
     const { roadmapId, score } = await req.json()
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    })
+    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
+
+    // Check Certification limit
+    const certCount = await prisma.certification.count({
+      where: { userId: session.user.id }
+    })
+    if (!hasAccess(user.plan as any, 'certificationsLimit', certCount)) {
+      return NextResponse.json({ 
+        error: "Certification limit reached", 
+        upgradeUrl: "/pricing",
+        plan: user.plan 
+      }, { status: 403 })
+    }
 
     if (!roadmapId) {
       return NextResponse.json({ error: "Roadmap ID is required" }, { status: 400 })

@@ -24,6 +24,8 @@ model User {
   xp            Int       @default(0)
   level         Int       @default(1)
   streak        Int       @default(0)
+  plan          String    @default("FREE") // FREE, PRO, ENTERPRISE
+  stripeCustomerId String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }

@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { hasAccess } from "@/lib/access-control";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -8,6 +10,22 @@ export async function POST(req: Request) {
   }
 
   try {
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    });
+
+    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+    // Limit check for FREE users
+    const mockMessagesToday = 3; // In real world, count from a Messages table
+    if (!hasAccess(user.plan as any, 'aiMessagesPerDay', mockMessagesToday)) {
+      return NextResponse.json({ 
+        error: "Daily AI limit reached", 
+        upgradeUrl: "/pricing",
+        plan: user.plan 
+      }, { status: 403 });
+    }
+
     const { message, nodeId, context } = await req.json();
 
     // In a real implementation, we would call OpenAI/Anthropic here
