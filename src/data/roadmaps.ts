@@ -5,6 +5,11 @@ export interface RoadmapNode {
   content: string;
   order: number;
   isOptional?: boolean;
+  quiz?: {
+    question: string;
+    options: string[];
+    correctOption: number;
+  };
 }
 
 export interface Roadmap {
@@ -26,11 +31,11 @@ export const roadmaps: Roadmap[] = [
     color: 'from-violet-500/20 to-purple-600/10',
     icon: 'Palette',
     nodes: [
-      { id: 'html-css', title: 'HTML & CSS', description: 'The foundation of the web.', content: 'Master semantic HTML, CSS Grid, Flexbox, and Responsive Design.', order: 1 },
-      { id: 'js-basics', title: 'JavaScript Essentials', description: 'Core language mechanics.', content: 'DOM Manipulation, ES6+, Async/Await, and Event Loop.', order: 2 },
-      { id: 'react-core', title: 'React Framework', description: 'The industry standard.', content: 'Hooks, Context API, State Management, and Component Life-cycles.', order: 3 },
-      { id: 'nextjs-app', title: 'Next.js App Router', description: 'Modern fullstack React.', content: 'Server Components, Streaming, Routing, and SEO optimization.', order: 4 },
-      { id: 'perf-optimization', title: 'Web Performance', description: 'Building for speed.', content: 'Lighthouse, Core Web Vitals, Lazy Loading, and Memoization.', order: 5 },
+      { id: 'html-css', title: 'HTML & CSS', description: 'The foundation of the web.', content: 'Master semantic HTML, CSS Grid, Flexbox, and Responsive Design.', order: 1, quiz: { question: 'Which CSS property is used to create a flexible box layout?', options: ['display: block', 'display: flex', 'position: absolute', 'float: left'], correctOption: 1 } },
+      { id: 'js-basics', title: 'JavaScript Essentials', description: 'Core language mechanics.', content: 'DOM Manipulation, ES6+, Async/Await, and Event Loop.', order: 2, quiz: { question: 'What is the result of "2" + 2 in JavaScript?', options: ['4', '22', 'NaN', 'TypeError'], correctOption: 1 } },
+      { id: 'react-core', title: 'React Framework', description: 'The industry standard.', content: 'Hooks, Context API, State Management, and Component Life-cycles.', order: 3, quiz: { question: 'Which hook is used to handle side effects in React?', options: ['useState', 'useMemo', 'useEffect', 'useContext'], correctOption: 2 } },
+      { id: 'nextjs-app', title: 'Next.js App Router', description: 'Modern fullstack React.', content: 'Server Components, Streaming, Routing, and SEO optimization.', order: 4, quiz: { question: 'What is the primary benefit of Server Components?', options: ['Faster client-side interaction', 'Reduced JavaScript bundle size', 'Direct access to the DOM', 'Better CSS scoping'], correctOption: 1 } },
+      { id: 'perf-optimization', title: 'Web Performance', description: 'Building for speed.', content: 'Lighthouse, Core Web Vitals, Lazy Loading, and Memoization.', order: 5, quiz: { question: 'Which metric measures the time to the first paint of any pixel?', options: ['LCP', 'CLS', 'FCP', 'FID'], correctOption: 2 } },
     ],
   },
   {

@@ -14,6 +14,7 @@ interface ButtonProps {
   onClick?: () => void
   type?: 'button' | 'submit'
   ariaLabel?: string
+  disabled?: boolean
 }
 
 const variants: Record<ButtonVariant, string> = {
@@ -42,8 +43,9 @@ export function Button({
   onClick,
   type = 'button',
   ariaLabel,
+  disabled,
 }: ButtonProps) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-purple focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900 ${variants[variant]} ${sizes[size]} ${className}`
+  const classes = `inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-purple focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900 ${variants[variant]} ${sizes[size]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`
 
   if (to) {
     return (
@@ -62,7 +64,7 @@ export function Button({
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} aria-label={ariaLabel}>
+    <button type={type} className={classes} onClick={onClick} aria-label={ariaLabel} disabled={disabled}>
       {children}
     </button>
   )

@@ -8,6 +8,34 @@ import { navLinks, brandName } from '../../data/navigation'
 import { Button } from '../ui/Button'
 import { ThemeToggle } from '../ui/theme-toggle'
 import { CommandMenu } from './CommandMenu'
+import { useUserStats } from '@/context/UserStatsContext'
+import { Trophy, User } from 'lucide-react'
+
+function UserStatsBadge() {
+  const { xp, level, streak, isLoading } = useUserStats();
+  
+  if (isLoading) return <div className="w-20 h-8 rounded-full bg-secondary animate-pulse" />;
+  
+  return (
+    <Link 
+      href="/profile" 
+      className="flex items-center gap-3 px-3 py-1.5 rounded-full bg-secondary/50 border border-border hover:bg-secondary transition-all group"
+    >
+      <div className="flex items-center gap-1.5">
+        <Trophy className="w-3.5 h-3.5 text-yellow-500 group-hover:scale-110 transition-transform" />
+        <span className="text-xs font-bold text-foreground">Lv.{level}</span>
+      </div>
+      <div className="w-px h-3 bg-border" />
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] font-medium text-muted-foreground">{xp} XP</span>
+      </div>
+      <div className="w-px h-3 bg-border" />
+      <div className="flex items-center gap-1.5">
+        <span className="text-xs font-medium text-orange-500">🔥 {streak}</span>
+      </div>
+    </Link>
+  );
+}
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -46,6 +74,9 @@ export function Navbar() {
             </div>
 
             <div className="hidden md:flex items-center gap-3">
+              {/* User Stats Badge */}
+              <UserStatsBadge />
+              
               <Button 
                 variant="ghost" 
                 size="sm" 

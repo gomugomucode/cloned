@@ -41,7 +41,7 @@ export function UserStatsProvider({ children }: { children: React.ReactNode }) {
     fetch('/api/user/stats', { method: 'POST' });
   }, []);
 
-  const progressToNextLevel = ((stats.xp - (Math.pow(stats.level - 1, 2) * 100)) / (getXPToNextLevel(stats.xp) + (stats.xp - (Math.pow(stats.level - 1, 2) * 100)))) * 100) || 0;
+  const progressToNextLevel = ((stats.xp - (Math.pow(stats.level - 1, 2) * 100)) / (getXPToNextLevel(stats.xp) + (stats.xp - (Math.pow(stats.level - 1, 2) * 100))) * 100) || 0;
 
   return (
     <UserStatsContext.Provider value={{ 

@@ -1,11 +1,12 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { CheckCircle2, Circle, Lock, BookOpen, ArrowRight, ArrowLeft } from 'lucide-react'
+import { CheckCircle2, Circle, Lock, BookOpen, ArrowRight, ArrowLeft, Sparkles, Send, X } from 'lucide-react'
 import { Roadmap, RoadmapNode } from '@/data/roadmaps'
 import { useProgress } from '@/context/ProgressContext'
 import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
+import { QuizView } from './QuizView'
 
 interface RoadmapViewProps {
   roadmap: Roadmap
@@ -14,6 +15,11 @@ interface RoadmapViewProps {
 export function RoadmapView({ roadmap }: RoadmapViewProps) {
   const { completedNodes, toggleNode } = useProgress()
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null)
+  const [activeQuizNode, setActiveQuizNode] = useState<RoadmapNode | null>(null)
+  const [isAiOpen, setIsAiOpen] = useState(false)
+  const [aiMessages, setAiMessages] = useState<{role: string, content: string}[]>([])
+  const [inputMessage, setInputMessage] = useState('')
+  const [isAiLoading, setIsAiLoading] = useState(false)
 
   const nodes = [...roadmap.nodes].sort((a, b) => a.order - b.order)
   
@@ -31,6 +37,7 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
   }
 
   return (
+    <>
     <div className="flex flex-col lg:flex-row gap-8 h-full">
       {/* Visual Roadmap Column */}
       <div className="flex-1 relative p-6 bg-card rounded-3xl border border-border overflow-y-auto max-h-[80vh] lg:max-h-screen">
@@ -107,19 +114,36 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
               </div>
 
               <div className="flex items-center justify-between pt-6 border-t border-border">
-                <Button 
-                  variant="outline" 
-                  disabled={!completedNodes.has(nodes.find(n => n.id === activeNodeId)?.id)}
-                  onClick={() => {
-                    // Logic to go to previous node
-                  }}
-                >
-                  <ArrowLeft className="w-4 h-4 mr-2" /> Previous
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    disabled={activeNodeId ? !completedNodes.has(activeNodeId) : true}
+                    onClick={() => {
+                      // Logic to go to previous node
+                    }}
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" /> Previous
+                  </Button>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="gap-2 text-primary hover:text-primary-foreground hover:bg-primary" 
+                    onClick={() => setIsAiOpen(true)}
+                  >
+                    <Sparkles className="w-4 h-4" /> Ask AI
+                  </Button>
+                </div>
                 
                 <Button 
                   variant="primary" 
-                  onClick={() => toggleNode(activeNodeId)}
+                  onClick={() => {
+                    const node = nodes.find(n => n.id === activeNodeId);
+                    if (node && node.quiz && !completedNodes.has(node.id)) {
+                      setActiveQuizNode(node);
+                    } else {
+                      toggleNode(activeNodeId);
+                    }
+                  }}
                   className="gap-2"
                 >
                   {completedNodes.has(activeNodeId) ? (
@@ -138,5 +162,128 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
         </AnimatePresence>
       </div>
     </div>
+    <AnimatePresence>
+      {activeQuizNode && (
+        <QuizView 
+          question={activeQuizNode.quiz!.question}
+          options={activeQuizNode.quiz!.options}
+          correctOption={activeQuizNode.quiz!.correctOption}
+          onSuccess={() => {
+            toggleNode(activeQuizNode.id);
+            setActiveQuizNode(null);
+          }}
+          onClose={() => setActiveQuizNode(null)}
+        />
+      )}
+    </AnimatePresence>
+    
+    {/* AI Mentor Chat Panel */}
+    <AnimatePresence>
+      {isAiOpen && (
+        <motion.div 
+          initial={{ opacity: 0, x: 400 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 400 }}
+          className="fixed right-0 top-0 h-screen w-full max-w-md bg-background border-l border-border shadow-2xl z-50 flex flex-col"
+        >
+          <div className="p-6 border-b border-border flex items-center justify-between bg-card">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-foreground">Forge AI Mentor</h3>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-tighter">Contextual Learning Assistant</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => setIsAiOpen(false)}>
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {aiMessages.length === 0 && (
+              <div className="text-center py-12 space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Sparkles className="w-8 h-8 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-bold">Hello, Learner!</h4>
+                  <p className="text-sm text-muted-foreground">
+                    I'm analyzing your current node: <br/>
+                    <span className="text-foreground font-medium italic">"{nodes.find(n => n.id === activeNodeId)?.title}"</span>
+                  </p>
+                </div>
+              </div>
+            )}
+            {aiMessages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${
+                  msg.role === 'user' 
+                    ? 'bg-primary text-primary-foreground rounded-tr-none' 
+                    : 'bg-secondary text-foreground rounded-tl-none border border-border'
+                }`}>
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+            {isAiLoading && (
+              <div className="flex justify-start">
+                <div className="bg-secondary p-3 rounded-2xl rounded-tl-none border border-border">
+                  <div className="flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:0.2s]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:0.4s]" />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="p-6 border-t border-border bg-card">
+            <form 
+              className="flex gap-2" 
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (!inputMessage.trim() || isAiLoading) return;
+                
+                const userMsg = inputMessage;
+                setInputMessage('');
+                setAiMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+                setIsAiLoading(true);
+
+                try {
+                  const res = await fetch('/api/ai/mentor', {
+                    method: 'POST',
+                    body: JSON.stringify({ 
+                      message: userMsg, 
+                      nodeId: activeNodeId,
+                      context: nodes.find(n => n.id === activeNodeId)?.title 
+                    })
+                  });
+                  const data = await res.json();
+                  setAiMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+                } catch (err) {
+                  setAiMessages(prev => [...prev, { role: 'assistant', content: "Sorry, my circuits are humming too loud. Please try again!" }]);
+                } finally {
+                  setIsAiLoading(false);
+                }
+              }}
+            >
+              <input 
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                placeholder="Ask about this module..."
+                className="flex-1 bg-background border border-border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+              <Button type="submit" size="sm" className="p-2">
+                <Send className="w-4 h-4" />
+              </Button>
+            </form>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   )
 }
