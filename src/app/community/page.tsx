@@ -9,6 +9,7 @@ import {
   MessageSquare,
   ArrowRight,
   Trophy,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -280,19 +281,5 @@ export default function CommunityPage() {
   );
 }
 
-function X({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
-}
+// Remove the custom X component at the bottom
+

@@ -7,13 +7,14 @@ import { Button } from '@/components/ui/Button';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { projects } from '@/data/projects';
 
-export default function SandboxPage({ params }: { params: { id: string } }) {
+export default function SandboxPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = React.use(params);
   const [code, setCode] = useState('// Start building your project here...\n\nfunction helloWorld() {\n  console.log("Welcome to the Forge Sandbox!");\n}\n\nhelloWorld();');
   const [output, setOutput] = useState<string[]>([]);
   const [activeFile, setActiveFile] = useState('main.js');
   const [isExecuting, setIsExecuting] = useState(false);
 
-  const project = projects.find(p => p.slug === params.id);
+  const project = projects.find(p => p.slug === resolvedParams.id);
 
   const runCode = () => {
     setIsExecuting(true);

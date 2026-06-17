@@ -6,14 +6,11 @@ import { CheckCircle2, Award, Share2, Download, ShieldCheck } from 'lucide-react
 import { roadmaps } from '@/data/roadmaps';
 import { Button } from '@/components/ui/Button';
 
-interface CertParams {
-  params: { id: string };
-}
-
-export default function CertificationPage({ params }: CertParams) {
+export default function CertificationPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = React.use(params);
   // In a real app, we'd fetch this from /api/certifications/[id]
   // For this demo, we'll mock a verified certificate
-  const certId = params.id;
+  const certId = resolvedParams.id;
   const roadmap = roadmaps[0]; // Default to Frontend for demo
   const userName = "Elite Learner"; // Mock name
   const issuedDate = new Date().toLocaleDateString();

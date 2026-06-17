@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, Send, RotateCcw, Trophy, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Mic, Send, RotateCcw, Trophy, CheckCircle2, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import { interviewCategories } from '@/data/interviews';
 import { Button } from '@/components/ui/Button';
 import { SectionHeader } from '@/components/ui/SectionHeader';
