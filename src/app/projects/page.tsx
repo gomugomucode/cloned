@@ -2,7 +2,7 @@
 import { projects } from '@/data/projects'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import Link from 'next/link'
-import { ChevronRight, Layout, Gauge, Github, ExternalLink } from 'lucide-react'
+import { ChevronRight, Gauge, GitBranch, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { AnimatePresence } from 'framer-motion'
@@ -91,7 +91,7 @@ export default function ProjectsPage() {
                   setSubmitModalOpen(true);
                 }}
               >
-                <Github className="w-4 h-4" /> Submit Work
+                <GitBranch className="w-4 h-4" /> Submit Work
               </Button>
               <Link 
                 href={`/projects/${project.slug}`} 
