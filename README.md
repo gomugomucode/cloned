@@ -12,32 +12,62 @@ StackForge is a high-performance developer resource platform designed to transit
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Language**: TypeScript
+- **Database**: Prisma ORM
 
-## 🏗️ Architecture
+## 🏗️ Project Structure
 
-The project follows a **Modular-Feature Architecture**:
+```text
+src/
+├── app/                # Next.js App Router (Pages, API Routes)
+│   ├── api/            # Backend endpoints
+│   ├── interview/       # Interview preparation modules
+│   ├── projects/      # Project learning system
+│   └── tools/          # Developer utilities
+├── components/         # React Components
+│   ├── ui/             # Atomic UI elements (Buttons, Inputs, etc.)
+│   ├── layout/         # Global layout components (Navbar, CommandMenu)
+│   └── projects/       # Project-specific components
+├── context/            # React Context for global state management
+├── data/               # Static content and mock data
+└── lib/                # Utility functions and shared logic
+prisma/                 # Database schema and migrations
+public/                 # Static assets
+```
 
-- **UI Layer**: Atomic components (`src/components/ui`) used across the application.
-- **Feature Layer**: High-level organisms (`src/components/home/`) grouped by page logic.
-- **Data Layer**: Single source of truth for content located in `src/data/`.
-- **Global Styles**: Design tokens defined in `src/app/globals.css` using CSS variables for theme consistency.
+## 🛠️ Getting Started
 
-## 🛠️ Development
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd stackforge
+```
 
-### Installation
-
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### Run Dev Server
+### 3. Environment Setup
+Create a `.env` file in the root directory and add your credentials:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/stackforge"
+NEXTAUTH_SECRET="your-nextauth-secret"
+# Add other necessary environment variables here
+```
 
+### 4. Database Initialization
+Initialize the Prisma client and push the schema to your database:
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 5. Run Development Server
 ```bash
 npm run dev
 ```
 
-### Build for Production
-
+### 6. Build for Production
 ```bash
 npm run build
 ```

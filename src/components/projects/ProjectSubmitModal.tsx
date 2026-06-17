@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Star, Send, X, Github, ExternalLink, MessageSquare } from 'lucide-react';
+import { CheckCircle2, Star, Send, X, GitBranch, ExternalLink, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 interface SubmissionProps {
@@ -46,7 +46,7 @@ export function ProjectSubmitModal({ projectId, onClose, onSuccess }: Submission
             <div className="space-y-2">
               <label className="text-xs font-bold text-muted-foreground uppercase">GitHub Repository URL *</label>
               <div className="relative">
-                <Github className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <GitBranch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input 
                   required 
                   className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary outline-none transition-all" 
